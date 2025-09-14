@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="saver" />
+ <meta name="referrer" content="no-referrer">
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  <meta name="description" content="记录生活，分析技术" />
+  
+  
+  
+  <title>
+    
+      常用的几个正则表达式(匹配数字) 
+      
+      
+      |
+    
+     saver的博客
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+    <link rel="icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/blog/css/main.css">
+
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/blog/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/blog">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img no-lazy src="https://gitee.com/saver-live/cdn/raw/master/images/avatar.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/blog">SAVER</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/blog">
+          <a href="/blog">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/archives/">
+          <a href="/blog/archives/">档案</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/categories/">
+          <a href="/blog/categories/">类别</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/tags/">
+          <a href="/blog/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/about/">
+          <a href="/blog/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/blog/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.0.0/tex-chtml.min.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  
+  
+<script src="/blog/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">常用的几个正则表达式(匹配数字)</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-09-14 05:44:37
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/blog/categories/%E5%B7%A5%E5%85%B7/" title="工具">
+                    <b>#</b> 工具
+                  </a>
+                </span>
+                
+              </span>
+          
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/blog/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" title="正则表达式">
+                    #正则表达式
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="一、-常见基础匹配"><a href="#一、-常见基础匹配" class="headerlink" title="一、 常见基础匹配"></a>一、 常见基础匹配</h1><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.(点号)</td>
+<td>匹配任意单个字符（除了换行符 \n）。</td>
+<td>a.c 匹配 “abc”, “a1c”, “a-c”</td>
+</tr>
+<tr>
+<td>\d</td>
+<td>匹配一个数字字符。等价于 [0-9]。</td>
+<td>\d\d 匹配 “12”, “05”</td>
+</tr>
+<tr>
+<td>\D</td>
+<td>匹配一个非数字字符。等价于 [^0-9]。</td>
+<td>\D\D 匹配 “ab”, “#!”</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>匹配字母、数字、下划线。等价于 [A-Za-z0-9_]。</td>
+<td>\w\w 匹配 “Ab”, “12”, “_a”</td>
+</tr>
+<tr>
+<td>\W</td>
+<td>匹配非字母、数字、下划线。等价于 [^A-Za-z0-9_]。</td>
+<td>\W 匹配 “@”, “ “, “.”</td>
+</tr>
+<tr>
+<td>\s</td>
+<td>匹配任何空白字符，包括空格、制表符、换页符等。</td>
+<td>a\sb 匹配 “a b”</td>
+</tr>
+<tr>
+<td>\S</td>
+<td>匹配任何非空白字符。</td>
+<td>a\Sb 匹配 “aBb”, “a1b”</td>
+</tr>
+<tr>
+<td>\n</td>
+<td>匹配一个换行符。</td>
+<td></td>
+</tr>
+<tr>
+<td>\t</td>
+<td>匹配一个制表符。</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="二、-位置匹配（锚点）"><a href="#二、-位置匹配（锚点）" class="headerlink" title="二、 位置匹配（锚点）"></a>二、 位置匹配（锚点）</h1><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>^</td>
+<td>匹配字符串的开始位置。</td>
+<td>^Hello 匹配 “Hello World” 中的 “Hello”</td>
+</tr>
+<tr>
+<td>$</td>
+<td>匹配字符串的结束位置。</td>
+<td>World$ 匹配 “Hello World” 中的 “World”</td>
+</tr>
+<tr>
+<td>\b</td>
+<td>匹配一个单词的边界（单词的开头或结尾）。</td>
+<td>\bcat\b 匹配 “a cat” 中的 “cat”，但不匹配 “category”</td>
+</tr>
+</tbody></table>
+<h1 id="三、-数量词（匹配次数）"><a href="#三、-数量词（匹配次数）" class="headerlink" title="三、 数量词（匹配次数）"></a>三、 数量词（匹配次数）</h1><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>匹配前面的子表达式零次或多次。</td>
+<td>ab*c 匹配 “ac”, “abc”, “abbc”</td>
+</tr>
+<tr>
+<td>+</td>
+<td>匹配前面的子表达式一次或多次。</td>
+<td>ab+c 匹配 “abc”, “abbc”，但不匹配 “ac”</td>
+</tr>
+<tr>
+<td>?</td>
+<td>匹配前面的子表达式零次或一次。</td>
+<td>colou?r 匹配 “color” 和 “colour”</td>
+</tr>
+<tr>
+<td>{n}</td>
+<td>匹配确定的 n 次。</td>
+<td>\d{4} 匹配 “1234”, “2023”</td>
+</tr>
+<tr>
+<td>{n,}</td>
+<td>匹配至少 n 次。</td>
+<td>\d{2,} 匹配 “12”, “123”, “1234”</td>
+</tr>
+<tr>
+<td>{n,m}</td>
+<td>匹配至少 n 次，最多 m 次。</td>
+<td>\d{2,4} 匹配 “12”, “123”, “1234”</td>
+</tr>
+<tr>
+<td>默认是贪婪匹配（匹配尽可能长的字符串），在数量词后加 ? 可改为惰性匹配（匹配尽可能短的字符串）。</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>.*：贪婪匹配任意字符</p>
+</li>
+<li><p>.*?：惰性匹配任意字符</p>
+</li>
+</ul>
+<h1 id="四、-字符组"><a href="#四、-字符组" class="headerlink" title="四、 字符组"></a>四、 字符组</h1><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>[abc]</td>
+<td>匹配方括号内的任意一个字符。</td>
+<td>[aeiou] 匹配 “hello” 中的 “e” 和 “o”</td>
+</tr>
+<tr>
+<td>[a-z]</td>
+<td>匹配指定范围内的任意一个字符。</td>
+<td>[0-9] 等价于 \d</td>
+</tr>
+<tr>
+<td>[^abc]</td>
+<td>匹配不在方括号内的任意一个字符（取反）。</td>
+<td>[^0-9] 等价于 \D</td>
+</tr>
+</tbody></table>
+<h1 id="五、-分组与捕获"><a href="#五、-分组与捕获" class="headerlink" title="五、 分组与捕获"></a>五、 分组与捕获</h1><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>(abc)</td>
+<td>将多个字符作为一个分组（捕获组），并可引用它。</td>
+<td>(abc)+ 匹配 “abc” 和 “abcabc”</td>
+</tr>
+<tr>
+<td>(?:abc)</td>
+<td>只分组，不捕获。提高效率，避免不必要的捕获。</td>
+<td>(?:abc)+ 匹配 “abcabc”，但不会创建捕获组</td>
+</tr>
+</tbody></table>
+<h1 id="六、-常用实用正则表达式"><a href="#六、-常用实用正则表达式" class="headerlink" title="六、 常用实用正则表达式"></a>六、 常用实用正则表达式</h1><ol>
+<li><p>电子邮箱<br> 模式: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$</p>
+<p> 说明: 匹配大多数常见邮箱格式。</p>
+<p> 示例: <a href="mailto:&#117;&#115;&#101;&#114;&#x40;&#101;&#120;&#97;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#109;">&#117;&#115;&#101;&#114;&#x40;&#101;&#120;&#97;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#109;</a>, <a href="mailto:&#x66;&#105;&#114;&#x73;&#x74;&#46;&#108;&#x61;&#x73;&#116;&#43;&#108;&#97;&#x62;&#x65;&#108;&#64;&#115;&#117;&#x62;&#x2e;&#x64;&#x6f;&#x6d;&#x61;&#105;&#110;&#x2e;&#x63;&#x6f;&#x2e;&#117;&#x6b;">&#x66;&#105;&#114;&#x73;&#x74;&#46;&#108;&#x61;&#x73;&#116;&#43;&#108;&#97;&#x62;&#x65;&#108;&#64;&#115;&#117;&#x62;&#x2e;&#x64;&#x6f;&#x6d;&#x61;&#105;&#110;&#x2e;&#x63;&#x6f;&#x2e;&#117;&#x6b;</a></p>
+<p> 注意: 这是一个“足够好”的版本，100%精准匹配所有合法邮箱的表达式极其复杂。</p>
+</li>
+<li><p>URL<br> 模式: https?:&#x2F;&#x2F;[^\s&#x2F;$.?#].[^\s]*</p>
+<p> 说明: 匹配以 http:&#x2F;&#x2F; 或 https:&#x2F;&#x2F; 开头的简单 URL。</p>
+<p> 示例: <a target="_blank" rel="noopener" href="https://www.example.com/">https://www.example.com</a>, <a target="_blank" rel="noopener" href="http://127.0.0.1:8000/path?query=value">http://127.0.0.1:8000/path?query=value</a></p>
+<p> 更复杂的版本: ^(https?:&#x2F;&#x2F;)?([\da-z.-]+).([a-z.]{2,6})([&#x2F;\w .-]<em>)</em>&#x2F;?$</p>
+</li>
+<li><p>手机号码（中国大陆）<br> 模式: ^(?:(?:+|00)86)?1[3-9]\d{9}$</p>
+<p> 说明: 匹配中国大陆手机号，可包含国际区号 +86 或 0086。</p>
+<p> 示例: 13800138000, +8613800138000, 008613800138000</p>
+</li>
+<li><p>身份证号（中国大陆18位）<br> 模式: ^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$</p>
+<p> 说明: 匹配18位身份证号，校验了日期和最后一位校验码的格式（但无法验证校验码是否正确）。</p>
+<p> 示例: 11010519491231002X</p>
+</li>
+<li><p>IPv4 地址<br> 模式: ^((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d).){3}(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$</p>
+<p> 说明: 匹配合法的 IPv4 地址，每个数字在 0-255 之间。</p>
+<p> 示例: 192.168.1.1, 127.0.0.1</p>
+</li>
+<li><p>日期 (YYYY-MM-DD)<br> 模式: ^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$</p>
+<p> 说明: 匹配 YYYY-MM-DD 格式的日期，校验了月份和天数（但无法区分大小月，如2月30日也会匹配）。</p>
+<p> 示例: 2023-10-01, 1999-02-28</p>
+</li>
+<li><p>强密码校验<br> 模式: ^(?&#x3D;.<em>[a-z])(?&#x3D;.</em>[A-Z])(?&#x3D;.<em>\d)(?&#x3D;.</em>[@$!%<em>?&amp;])[A-Za-z\d@$!%</em>?&amp;]{8,}$</p>
+<p> 说明: 这是一个正向肯定预查的复杂例子。它要求密码必须包含：</p>
+<p> 至少一个小写字母 (?&#x3D;.*[a-z])</p>
+<p> 至少一个大写字母 (?&#x3D;.*[A-Z])</p>
+<p> 至少一个数字 (?&#x3D;.*\d)</p>
+<p> 至少一个特殊符号 (?&#x3D;.<em>[@$!%</em>?&amp;])</p>
+<p> 总长度至少为8位 {8,}</p>
+<p> 示例: Passw0rd!, Str0ngP@ss</p>
+</li>
+<li><p>匹配中文<br> 模式 (Unicode): [\u4e00-\u9fa5]</p>
+<p> 说明: 匹配单个中文字符。大多数现代环境（如 JavaScript、Python3）都支持此方式。</p>
+<p> 示例: [\u4e00-\u9fa5]+ 匹配 “你好世界”</p>
+</li>
+</ol>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><blockquote>
+<p>转义 (Escape): 正则表达式中的特殊字符（如 ., *, ?, $）如果要想匹配它们自身，需要在前面加上反斜杠 \ 进行转义。例如，要匹配 example.com 中的点，需要用 example.com。</p>
+</blockquote>
+<blockquote>
+<p>语言差异: 不同编程语言（Python, JavaScript, Java, PHP等）对正则表达式的支持和语法细节可能略有不同，使用时请查阅相关文档。</p>
+</blockquote>
+<blockquote>
+<p>性能: 复杂的正则表达式（尤其是嵌套的量词和回溯）可能导致性能问题（称为“灾难性回溯”），在处理长文本时要特别注意。</p>
+</blockquote>
+<blockquote>
+<p>在线工具: 强烈推荐使用 Regex101 或 RegExr 等在线工具来编写、测试和调试你的正则表达式。它们可以可视化解释你的表达式，并实时显示匹配结果。</p>
+</blockquote>
+
+      </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81-%E5%B8%B8%E8%A7%81%E5%9F%BA%E7%A1%80%E5%8C%B9%E9%85%8D"><span class="toc-text">一、 常见基础匹配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E4%BD%8D%E7%BD%AE%E5%8C%B9%E9%85%8D%EF%BC%88%E9%94%9A%E7%82%B9%EF%BC%89"><span class="toc-text">二、 位置匹配（锚点）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81-%E6%95%B0%E9%87%8F%E8%AF%8D%EF%BC%88%E5%8C%B9%E9%85%8D%E6%AC%A1%E6%95%B0%EF%BC%89"><span class="toc-text">三、 数量词（匹配次数）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81-%E5%AD%97%E7%AC%A6%E7%BB%84"><span class="toc-text">四、 字符组</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81-%E5%88%86%E7%BB%84%E4%B8%8E%E6%8D%95%E8%8E%B7"><span class="toc-text">五、 分组与捕获</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AD%E3%80%81-%E5%B8%B8%E7%94%A8%E5%AE%9E%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">六、 常用实用正则表达式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">注意事项</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/blog/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/saver-live">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+        <li>
+          
+              <a title="twitter" target="_blank" rel="noopener" href="https://x.com/saver_live">
+                <i class="iconfont icon-twitter"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/saver-live">Copyright © 2025 saver</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/blog/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/blog/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/blog/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%B8%B8%E7%94%A8%E7%9A%84%E5%87%A0%E4%B8%AA%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F(%E5%8C%B9%E9%85%8D%E6%95%B0%E5%AD%97) + '&url=' + https%3A%2F%2Fsaver-live.github.io%2Fblog%2F2025%2F09%2F12%2F%25E5%25B8%25B8%25E7%2594%25A8%25E7%259A%2584%25E5%2587%25A0%25E4%25B8%25AA%25E6%25AD%25A3%25E5%2588%2599%25E8%25A1%25A8%25E8%25BE%25BE%25E5%25BC%258F-%25E5%258C%25B9%25E9%2585%258D%25E6%2595%25B0%25E5%25AD%2597%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://saver-live.github.io/blog/2025/09/12/%E5%B8%B8%E7%94%A8%E7%9A%84%E5%87%A0%E4%B8%AA%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F-%E5%8C%B9%E9%85%8D%E6%95%B0%E5%AD%97/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/blog/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

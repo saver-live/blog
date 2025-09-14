@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="saver" />
+ <meta name="referrer" content="no-referrer">
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  <meta name="description" content="记录生活，分析技术" />
+  
+  
+  
+  <title>
+    
+      electron 开发拆坑总结 
+      
+      
+      |
+    
+     saver的博客
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+    <link rel="icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/blog/css/main.css">
+
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/blog/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/blog">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img no-lazy src="https://gitee.com/saver-live/cdn/raw/master/images/avatar.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/blog">SAVER</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/blog">
+          <a href="/blog">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/archives/">
+          <a href="/blog/archives/">档案</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/categories/">
+          <a href="/blog/categories/">类别</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/tags/">
+          <a href="/blog/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/about/">
+          <a href="/blog/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/blog/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.0.0/tex-chtml.min.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  
+  
+<script src="/blog/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">electron 开发拆坑总结</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-09-12 18:49:20
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/blog/categories/%E6%A1%8C%E9%9D%A2%E5%BC%80%E5%8F%91/" title="桌面开发">
+                    <b>#</b> 桌面开发
+                  </a>
+                </span>
+                
+              </span>
+          
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/blog/tags/Electron/" title="Electron">
+                    #Electron
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有一个web项目需要用客户端来包装一下 项目的主要业务都在服务器上 所以项目的大多数功能都用url 地址来访问； 客户端登陆界面在本地 打包客户端的本地登陆界面 做为登陆入口；</p>
+<p>electron 开发中 有一个概念需要理解 我暂且叫主进程吗 main,  这个进程的控制 在项目的 配置 package.json  的main 字段中定义；</p>
+<p>main.js 作为electron 控制的后端入口， 基本的主要控制都是在这个文件里面定义  eletron 控制系统 的接口很多也在这里面定义，详细可以查看官方API 文档； </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;linksame&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.4&quot;,</span><br><span class="line">  &quot;description&quot;: &quot;邻盛管家客户端&quot;,</span><br><span class="line">  &quot;main&quot;: &quot;main.js&quot;,  // 主进程控制定义</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;start&quot;: &quot;electron .&quot;,</span><br><span class="line">    &quot;dist&quot;: &quot;electron-builder -wm&quot;,</span><br><span class="line">    &quot;build&quot;: &quot;electron-builder&quot;,</span><br><span class="line">    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><p>使用到的nodejs 模块：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&quot;electron-main-notification&quot;: &quot;^1.0.1&quot;,  // 右下角消息提醒 组件</span><br><span class="line"> &quot;electron-notify&quot;: &quot;^0.1.0&quot;,// 消息提醒组件</span><br><span class="line"> &quot;electron-packager&quot;: &quot;^10.1.2&quot;,// 项目打包 组件  打包为独立的绿色运行程序</span><br><span class="line"> &quot;electron-squirrel-startup&quot;: &quot;^1.0.0&quot;,// 升级包工具  用处不详</span><br><span class="line"> &quot;electron-updater&quot;: &quot;^2.20.1&quot;,// 一个不错的升级包 制作组件 我们用它做的升级包 提醒</span><br><span class="line"> &quot;gulp&quot;: &quot;^3.9.1&quot;, // 工具链工具  本地开发</span><br><span class="line"> &quot;nedb&quot;: &quot;^1.8.0&quot;,// 一个数据库组件  对象性质 nodejs  </span><br><span class="line"> &quot;request&quot;: &quot;^2.83.0&quot; // 一个请求库</span><br></pre></td></tr></table></figure>
+<p>项目用到 eletron 主要的模块 说明</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">const electron = require(&#x27;electron&#x27;) //</span><br><span class="line">//import &#123; autoUpdater &#125; from &quot;electron-updater&quot;</span><br><span class="line">const autoUpdater=require(&#x27;electron-updater&#x27;).autoUpdater // 升级包检测 不同于官方默认的那个</span><br><span class="line">autoUpdater.autoDownload = false // 配置取消自动下载</span><br><span class="line">// Module to control application life.</span><br><span class="line">const app = electron.app // 项目基础控制</span><br><span class="line">// Module to create native browser window.</span><br><span class="line">const BrowserWindow = electron.BrowserWindow  // 开窗口控制</span><br><span class="line">const BrowserView = electron.BrowserView  // 窗口控制另外一种方式 </span><br><span class="line">const dialog = electron.dialog // 系统弹出地址框</span><br><span class="line">const Tray = electron.Tray // 右下角任务栏</span><br><span class="line">const Menu = electron.Menu //右下角任务栏 菜单控制</span><br><span class="line">const Notification = electron.Notification // 消息提醒</span><br><span class="line">const window = electron.window </span><br><span class="line">const ipcMain = require(&#x27;electron&#x27;).ipcMain  // 重点 主进程通信专用  发通道信息  监听通道</span><br><span class="line">const ipcRenderer = require(&#x27;electron&#x27;).ipcRenderer // 重点 子窗口 通信专用 可以在子窗口中 和 主进程通信</span><br><span class="line">//const storage = require(&#x27;electron-json-storage&#x27;)</span><br><span class="line">const &#123;shell&#125; = require(&#x27;electron&#x27;) // electron 基础功能接口  例如  打开浏览器网页  ； 打开文件  运行程序等等；</span><br><span class="line">const notify = require(&#x27;electron-main-notification&#x27;) // 也是一个消息对话框</span><br><span class="line">const &#123;session&#125; = require(&#x27;electron&#x27;)  // seesion  cookie 控制</span><br><span class="line">const fs = require(&#x27;fs&#x27;);  // nodejs 模块 文件文本操作等等 io</span><br><span class="line">const nedb = require(&#x27;nedb&#x27;); // 数据库 一个nodejs 中可以用的数据库</span><br></pre></td></tr></table></figure>
+<h2 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h2><p>const ipcMain &#x3D; require(‘electron’).ipcMain &#x2F;&#x2F; 重点 主进程通信专用 发通道信息 监听通道<br>const ipcRenderer &#x3D; require(‘electron’).ipcRenderer &#x2F;&#x2F; 重点 子窗口 通信专用 可以在子窗口中 和 主进程通信<br>&#x2F;&#x2F; 例如 主穿裤中监听 界面发来的命令 主进程中执行相应操作<br>ipcMain.on(‘window-min’,function(){<br>mainWindow.minimize();<br>})<br>&#x2F;&#x2F; 主进程发起送消息 其他页面会收到数据domianObj<br>mainWindow.webContents.send(‘islogin’,domainObj)</p>
+<h2 id="本地数据库"><a href="#本地数据库" class="headerlink" title="本地数据库"></a>本地数据库</h2><h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+<h2 id="升级包制作"><a href="#升级包制作" class="headerlink" title="升级包制作"></a>升级包制作</h2><p>参考 ：<a target="_blank" rel="noopener" href="https://www.electron.build/auto-update">https://www.electron.build/auto-update</a><br>const autoUpdater&#x3D;require(‘electron-updater’).autoUpdater &#x2F;&#x2F; 升级包检查模块 包含检查升级包 下载 安装等接口封装 都在里面<br>autoUpdater.setFeedURL(‘<a target="_blank" rel="noopener" href="http://www.linksame.com/release/">http://www.linksame.com/release/</a>‘);<br>升级包检测 比较<br>app.getVersion() &#x2F;&#x2F; 系统当前版本<br>&#x2F;&#x2F; 检查升级包接口 返回 Promise 对象<br>let checkinfo&#x3D;autoUpdater.checkForUpdates();<br>&#x2F;&#x2F;console.log(‘checkinfo:’,checkinfo)<br>checkinfo.then(function(data){<br>console.log(‘datav:::’,data.versionInfo.version)<br>console.log(‘datav2:::’,data)<br>&#x2F;&#x2F; 返回的data 为网络上版本最新版信息 可获取系统版本号 和 最新版本好比较 确定要部要升级<br>if(data.versionInfo.version!&#x3D;app.getVersion()){<br>updateHandle();<br>&#x2F;&#x2F;const UpdateInfo&#x3D;require(‘electron-updater’).UpdateInfo<br>&#x2F;&#x2F;console.log(‘UpdateInfo:’,)<br>}<br>})</p>
+<h2 id="Promise-应用-对象"><a href="#Promise-应用-对象" class="headerlink" title="Promise 应用 对象"></a>Promise 应用 对象</h2><p>异步变成 新规范 一些功能中用到了 例如 autoUpdater 升级管理 模块的的一些接口 就是 该类型</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>升级参考<br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000010271226">https://segmentfault.com/a/1190000010271226</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/qirui/p/8328069.html">https://www.cnblogs.com/qirui/p/8328069.html</a></p>
+<h2 id="main-js-参考"><a href="#main-js-参考" class="headerlink" title="main.js 参考"></a>main.js 参考</h2><p>项目组控制 介绍说明</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br></pre></td><td class="code"><pre><span class="line">if (require(&#x27;electron-squirrel-startup&#x27;)) return;</span><br><span class="line">const electron = require(&#x27;electron&#x27;)</span><br><span class="line">//import &#123; autoUpdater &#125; from &quot;electron-updater&quot;</span><br><span class="line">const autoUpdater=require(&#x27;electron-updater&#x27;).autoUpdater</span><br><span class="line">autoUpdater.autoDownload = false // 配置取消自动下载</span><br><span class="line">// Module to control application life.</span><br><span class="line">const app = electron.app</span><br><span class="line">// Module to create native browser window.</span><br><span class="line">const BrowserWindow = electron.BrowserWindow</span><br><span class="line">const BrowserView = electron.BrowserView</span><br><span class="line">const dialog = electron.dialog</span><br><span class="line">const Tray = electron.Tray</span><br><span class="line">const Menu = electron.Menu</span><br><span class="line">const Notification = electron.Notification</span><br><span class="line">const window = electron.window</span><br><span class="line">const ipcMain = require(&#x27;electron&#x27;).ipcMain</span><br><span class="line">const ipcRenderer = require(&#x27;electron&#x27;).ipcRenderer</span><br><span class="line">//const storage = require(&#x27;electron-json-storage&#x27;)</span><br><span class="line">const &#123;shell&#125; = require(&#x27;electron&#x27;)</span><br><span class="line">const notify = require(&#x27;electron-main-notification&#x27;)</span><br><span class="line">const &#123;session&#125; = require(&#x27;electron&#x27;)</span><br><span class="line">const fs = require(&#x27;fs&#x27;);</span><br><span class="line">const nedb = require(&#x27;nedb&#x27;); // 数据库</span><br><span class="line">  </span><br><span class="line">const path = require(&#x27;path&#x27;)</span><br><span class="line">const url = require(&#x27;url&#x27;)</span><br><span class="line"></span><br><span class="line">const icologo=__dirname+&#x27;\\ioc\\ls.ico&#x27;</span><br><span class="line">// 域名</span><br><span class="line">const domain=&quot;http://www.linksame.com&quot;;</span><br><span class="line">const loginpath=domain+&quot;/index.php?app=Core&amp;m=Pcdlogin&amp;network=1&amp;ip=0&quot;</span><br><span class="line">const request = require(&#x27;request&#x27;)</span><br><span class="line">// 判断网络配置</span><br><span class="line">const  options = &#123;</span><br><span class="line">　　　　　　　method: &#x27;post&#x27;,</span><br><span class="line">                      url:domain+&#x27;/release/network.json&#x27;,</span><br><span class="line">                      form: &quot;content&quot;,</span><br><span class="line">                      headers: &#123;</span><br><span class="line">                        &#x27;Content-Type&#x27;: &#x27;application/x-www-form-urlencoded&#x27;</span><br><span class="line">                      &#125;</span><br><span class="line">                    &#125;;</span><br><span class="line"></span><br><span class="line">const message=&#123;</span><br><span class="line">      error:&#x27;check version error&#x27;,</span><br><span class="line">      checking:&#x27;check updateing ......&#x27;,</span><br><span class="line">      updateAva:&#x27;find a New Version，downloading ......&#x27;,</span><br><span class="line">      updateNotAva:&#x27;now it New best&#x27;,</span><br><span class="line">    &#125;;</span><br><span class="line">const os = require(&#x27;os&#x27;);</span><br><span class="line"></span><br><span class="line">// init obj</span><br><span class="line">let mainWindow</span><br><span class="line">let tray = null</span><br><span class="line">const app_data=app.getPath(&#x27;userData&#x27;)</span><br><span class="line">console.log(&#x27;app_data&#x27;,app_data)</span><br><span class="line"></span><br><span class="line">// 设置共享运行目录</span><br><span class="line">global.linksame = &#123;</span><br><span class="line">  runpath: app_data</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 实例化连接对象（不带参数默认为内存数据库） </span><br><span class="line"></span><br><span class="line">const db = new nedb(&#123;</span><br><span class="line">  filename: path.join(app_data,&#x27;\\Cache\\downloadfile.db&#x27;),</span><br><span class="line">  autoload: true</span><br><span class="line">&#125;);</span><br><span class="line">let date=new Date();</span><br><span class="line"></span><br><span class="line">const initobj=&#123;</span><br><span class="line">  width:1024,</span><br><span class="line">  height:760,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function createWindow() &#123;</span><br><span class="line">    // Create the browser window.</span><br><span class="line">    mainWindow = new BrowserWindow(&#123; </span><br><span class="line">      width: 712, </span><br><span class="line">      height: 588, </span><br><span class="line">      icon:icologo,</span><br><span class="line">      title:&#x27;邻盛企业管家&#x27;,</span><br><span class="line">      frame: false,</span><br><span class="line">      transparent: true,</span><br><span class="line">      webPreferences:&#123;</span><br><span class="line">        nodeIntegration:true,</span><br><span class="line">        nodeIntegrationInWorker:true,</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">//Menu.setApplicationMenu(null);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"> const mainindex = path.join(&#x27;file://&#x27;, __dirname, &#x27;index.html&#x27;)</span><br><span class="line"> mainWindow.loadURL(mainindex)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    mainWindow.once(&#x27;ready-to-show&#x27;, () =&gt; &#123;</span><br><span class="line">        mainWindow.show()</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    // Open the DevTools.</span><br><span class="line">    // mainWindow.webContents.openDevTools()</span><br><span class="line"></span><br><span class="line">    // Emitted when the window is closed.</span><br><span class="line">    mainWindow.on(&#x27;closed&#x27;, function() &#123;</span><br><span class="line">       </span><br><span class="line">        mainWindow = null</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    //捕获新打开窗口事件 定制新窗口</span><br><span class="line">    mainWindow.webContents.on(&#x27;new-window&#x27;, (event, url) =&gt; &#123;</span><br><span class="line">      event.preventDefault()</span><br><span class="line">      const win = new BrowserWindow(&#123; </span><br><span class="line">        width: 1024, </span><br><span class="line">        height: 760,</span><br><span class="line">        icon:__dirname+&#x27;./ioc/ls.ico&#x27;,</span><br><span class="line">        title:&#x27;邻盛企业管家&#x27;,</span><br><span class="line">        frame: false,</span><br><span class="line">        transparent: true,</span><br><span class="line">        backgroundColor:&#x27;#4385F4&#x27;,</span><br><span class="line"></span><br><span class="line">      &#125;)</span><br><span class="line">      </span><br><span class="line">      win.once(&#x27;ready-to-show&#x27;, () =&gt; win.show())</span><br><span class="line">      win.loadURL(url)</span><br><span class="line">      //event.newGuest = win</span><br><span class="line"></span><br><span class="line">      console.log(&#x27;windowID:&#x27;,win.id)</span><br><span class="line"></span><br><span class="line">      ipcMain.on(&#x27;sub-close&#x27;,function(d)&#123;</span><br><span class="line">        console.log(&#x27;d&#x27;,d)</span><br><span class="line">        win.hide()</span><br><span class="line">      &#125;)</span><br><span class="line"></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    // download </span><br><span class="line"></span><br><span class="line">    mainWindow.webContents.session.on(&#x27;will-download&#x27;, (event, item, webContents) =&gt; &#123;</span><br><span class="line">        // Set the save path, making Electron not to prompt a save dialog.</span><br><span class="line"></span><br><span class="line">        item.on(&#x27;updated&#x27;, (event, state) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">            if (state === &#x27;interrupted&#x27;) &#123;</span><br><span class="line">                console.log(&#x27;Download is interrupted but can be resumed&#x27;)</span><br><span class="line">            &#125; else if (state === &#x27;progressing&#x27;) &#123;</span><br><span class="line">                // set loading progressBar</span><br><span class="line">                 mainWindow.setProgressBar(item.getReceivedBytes() / item.getTotalBytes());</span><br><span class="line"></span><br><span class="line">                if (item.isPaused()) &#123;</span><br><span class="line">                    console.log(&#x27;Download is paused&#x27;)</span><br><span class="line">                &#125; else &#123;</span><br><span class="line"></span><br><span class="line">                  if(Math.ceil(item.getReceivedBytes()/1024/1024)===1)&#123;</span><br><span class="line">                      let title=&#x27;稍等 正在下载&#x27;;</span><br><span class="line">                      let body= item.getSavePath();</span><br><span class="line">                      let ico=getico(item.getSavePath());</span><br><span class="line">                      notifly(title,body,ico)</span><br><span class="line">                  &#125;</span><br><span class="line"></span><br><span class="line">                    let download = `Received bytes: $&#123;Math.ceil(item.getReceivedBytes()/1024/1024)&#125; M / $&#123;Math.ceil(item.getTotalBytes()/1024/1024)&#125;M`</span><br><span class="line"></span><br><span class="line">                    console.log(`Received bytes: $&#123;Math.ceil(item.getReceivedBytes()/1024/1024)&#125; M / $&#123;Math.ceil(item.getTotalBytes()/1024/1024)&#125;M`)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        item.once(&#x27;done&#x27;, (event, state) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">            if (state === &#x27;completed&#x27;) &#123;</span><br><span class="line">                const filepath=item.getSavePath();</span><br><span class="line">                var arr = filepath.split(&#x27;\\&#x27;);</span><br><span class="line">                let filename=arr[arr.length-1];</span><br><span class="line"></span><br><span class="line">                let title=filename+&#x27; 下载完成！&#x27;;</span><br><span class="line">                let body= item.getSavePath()+&#x27;    打开&#x27;;</span><br><span class="line">                let ico=getico(item.getSavePath());</span><br><span class="line"></span><br><span class="line">                //notifly(title,body,ico)</span><br><span class="line">                notiflyclick(title,body,function()&#123; shell.openItem(filepath) &#125;)</span><br><span class="line">                console.log(&#x27;Download successfully&#x27;)</span><br><span class="line">            </span><br><span class="line">                db.insert(&#123;</span><br><span class="line">                    name: filename,</span><br><span class="line">                    path:item.getSavePath(),</span><br><span class="line">                    datetime:date.toLocaleDateString(),</span><br><span class="line">                    sizes:Math.ceil(item.getTotalBytes()/1024/1024),</span><br><span class="line">                  &#125;, (err, ret) =&gt; &#123;</span><br><span class="line">                     console.log(&#x27;insert successfully&#x27;,err,ret)</span><br><span class="line">                  &#125;);</span><br><span class="line">               </span><br><span class="line"></span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                console.log(`Download failed: $&#123;state&#125;`)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    //  任务栏图标菜单 A </span><br><span class="line">    tray = new Tray(icologo)</span><br><span class="line">    const contextMenu = Menu.buildFromTemplate([&#123;</span><br><span class="line">            label: &#x27;帮助中心&#x27;,</span><br><span class="line">            type: &#x27;normal&#x27;,</span><br><span class="line">            icon:  __dirname+&#x27;\\ioc\\help.png&#x27;,</span><br><span class="line">            click: function() &#123;</span><br><span class="line">                  shell.openExternal(&#x27;http://help.linksame.com/&#x27;)</span><br><span class="line">             &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123; label: &#x27;官网&#x27;, type: &#x27;normal&#x27;, icon: __dirname+&#x27;\\ioc\\web.png&#x27;,click:function()&#123;</span><br><span class="line">            shell.openExternal(&#x27;http://www.linksame.com&#x27;)</span><br><span class="line">        &#125;&#125;,</span><br><span class="line">        &#123; label: &#x27;移动端&#x27;, type: &#x27;normal&#x27;, icon:__dirname+&#x27;\\ioc\\phone.png&#x27;,click:function()&#123;</span><br><span class="line">            //shell.openExternal(&#x27;http://www.linksame.com/index.php?app=Core&amp;m=V7&amp;a=download&#x27;)</span><br><span class="line">            </span><br><span class="line">            const modalPath = path.join(&#x27;file://&#x27;, __dirname, &#x27;qcode.html&#x27;)</span><br><span class="line">            //let win = new BrowserWindow(&#123; width: 705, height: 250,resizable:false,autoHideMenuBar:true,type: &#x27;desktop&#x27;, icon: &#x27;./ioc/download2.png&#x27; &#125;)</span><br><span class="line">            let win = new BrowserWindow(&#123; </span><br><span class="line">              title:&#x27;移动设备软件下载&#x27;, </span><br><span class="line">              width: 250, </span><br><span class="line">              height: 250,</span><br><span class="line">              autoHideMenuBar:true,</span><br><span class="line">              type: &#x27;desktop&#x27;, </span><br><span class="line">              icon:__dirname+&#x27;\\ioc\\phone.png&#x27;,</span><br><span class="line">              resizable:false,</span><br><span class="line">              maximizable:false,</span><br><span class="line"></span><br><span class="line">               &#125;)</span><br><span class="line">            //win.setApplicationMenu(null);</span><br><span class="line">            win.on(&#x27;close&#x27;, function() &#123; win = null &#125;)</span><br><span class="line">            win.loadURL(modalPath)</span><br><span class="line">            win.show()</span><br><span class="line"></span><br><span class="line">        &#125; &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            label: &#x27;下载管理&#x27;,</span><br><span class="line">            type: &#x27;normal&#x27;,</span><br><span class="line">            icon:__dirname+&#x27;\\ioc\\down.png&#x27;,</span><br><span class="line">            click: function() &#123;</span><br><span class="line">                const modalPath = path.join(&#x27;file://&#x27;, __dirname, &#x27;download.html&#x27;)</span><br><span class="line">                //let win = new BrowserWindow(&#123; width: 705, height: 250,resizable:false,autoHideMenuBar:true,type: &#x27;desktop&#x27;, icon: &#x27;./ioc/download2.png&#x27; &#125;)</span><br><span class="line">                let win = new BrowserWindow(&#123; </span><br><span class="line">                  width: 705, </span><br><span class="line">                  height: 250,</span><br><span class="line">                  autoHideMenuBar:true,</span><br><span class="line">                  type: &#x27;desktop&#x27;, </span><br><span class="line">                  icon: __dirname+&#x27;\\ioc\\download2.png&#x27;,</span><br><span class="line">                  resizable:false,</span><br><span class="line">                  maximizable:false,</span><br><span class="line">                   &#125;)</span><br><span class="line">                //win.setApplicationMenu(null);</span><br><span class="line">                win.on(&#x27;close&#x27;, function() &#123; win = null &#125;)</span><br><span class="line">                win.loadURL(modalPath)</span><br><span class="line">                win.show()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            label: &#x27;设置&#x27;,</span><br><span class="line">            type: &#x27;submenu&#x27;,</span><br><span class="line">            icon:__dirname+&#x27;\\ioc\\setting.png&#x27;,</span><br><span class="line">            submenu: [</span><br><span class="line">                &#123; label: &#x27;开机启动&#x27;, type: &#x27;normal&#x27;, icon:__dirname+&#x27;\\ioc\\sysset.png&#x27; &#125;,</span><br><span class="line">                &#123; label: &#x27;更新缓存&#x27;, type: &#x27;normal&#x27;, icon:__dirname+&#x27;\\ioc\\clear-2.png&#x27;,click:function()&#123;</span><br><span class="line">                           let cachepath=app_data+&#x27;/Cache&#x27;</span><br><span class="line">                           let dir=fs.readdir(cachepath,(err,file)=&gt;&#123;</span><br><span class="line">                                                          </span><br><span class="line">                              for(v in file)&#123;</span><br><span class="line">                                  console.log(&#x27;file&#x27;,v)</span><br><span class="line">                                  let rmnum=shell.moveItemToTrash(path.join(cachepath,file[v]))</span><br><span class="line">                                  console.log(&#x27;remove&#x27;,rmnum)</span><br><span class="line">                              &#125;</span><br><span class="line">                              notifly(&#x27;缓存清理&#x27;,&#x27;缓存清理完成！&#x27;,__dirname+&#x27;\\ioc\\ok.png&#x27;)</span><br><span class="line"></span><br><span class="line">                           &#125;)</span><br><span class="line">                &#125;&#125;,</span><br><span class="line">              </span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123; label: &#x27;升级&#x27;, type: &#x27;normal&#x27;, icon: __dirname+&#x27;\\ioc\\upgrate.png&#x27;,click:function()&#123;</span><br><span class="line">          updateHandle();</span><br><span class="line">        &#125; &#125;,</span><br><span class="line">        &#123; label: &#x27;注销&#x27;, type: &#x27;normal&#x27;, icon: __dirname+&#x27;\\ioc\\zx.png&#x27;, role: &#x27;close&#x27;,click:function()&#123;</span><br><span class="line">            </span><br><span class="line">            // console.log(&#x27;siht&#x27;,console.log(ses.getUserAgent()))</span><br><span class="line">            // 查询与指定 url 相关的所有 cookies.</span><br><span class="line">            </span><br><span class="line">            /*session.defaultSession.cookies.remove(&#x27;http://www.linksame.com&#x27;,&#x27;sns_shell&#x27;,function(cookies) &#123;</span><br><span class="line">                          console.log(&#x27;remove~~~~&#x27;)</span><br><span class="line">                        &#125;);*/</span><br><span class="line">            session.defaultSession.cookies.get(&#123;url:domain&#125;, function(error, cookies) &#123;</span><br><span class="line"></span><br><span class="line">                       let  domainObj=cookies</span><br><span class="line">                       for (var i in domainObj)&#123;</span><br><span class="line">                         console.log(i,&#x27;:&#x27;,domainObj[i])</span><br><span class="line">                         session.defaultSession.cookies.remove(domain,domainObj[i].name, function(data) &#123;</span><br><span class="line">                                       console.log(&#x27;remove&#x27;,data);</span><br><span class="line">                          &#125;);</span><br><span class="line">                         </span><br><span class="line">                       &#125;</span><br><span class="line">                       //console.log(&#x27;ddd&#x27;,domainObj)</span><br><span class="line">             &#125;);</span><br><span class="line"></span><br><span class="line">             let newobj=session.defaultSession.cookies.get(&#123; url : domain &#125;, function(error, cookies) &#123;</span><br><span class="line">                console.log(&#x27;login out coockie:&#x27;,newobj)</span><br><span class="line">              &#125;);</span><br><span class="line">           </span><br><span class="line">              app.quit();  </span><br><span class="line">              //session.cookies.remove(&quot;http://www.linksame.com&quot;, name, callback)</span><br><span class="line">                          </span><br><span class="line">        &#125;&#125;,</span><br><span class="line">        &#123; label: &#x27;退出&#x27;, type: &#x27;normal&#x27;, icon:__dirname+&#x27;\\ioc\\loginout.png&#x27;, role: &#x27;close&#x27;,click:function()&#123;</span><br><span class="line">              const dopt=&#123;</span><br><span class="line">                type:&#x27;question&#x27;,</span><br><span class="line">                title:&#x27;你确定要退出吗？&#x27;,</span><br><span class="line">                buttons:[&#x27;确定&#x27;,&#x27;取消&#x27;],</span><br><span class="line">                defaultId:1,</span><br><span class="line">                message:&#x27;退出后 会关闭邻盛企业管家。&#x27;,</span><br><span class="line">                //icon:&#x27;./ioc/ls.ico&#x27;,</span><br><span class="line">                noLink:true,</span><br><span class="line">              &#125;</span><br><span class="line">              dialog.showMessageBox(dopt,function(e)&#123;</span><br><span class="line">                 console.log(&#x27;e:&#x27;,e)</span><br><span class="line">                 if(e==0)&#123;</span><br><span class="line">                    app.quit();  </span><br><span class="line">                 &#125;else&#123;</span><br><span class="line">                    console.log(&#x27;nat close&#x27;)</span><br><span class="line">                 &#125;</span><br><span class="line">                //   </span><br><span class="line">              &#125;)</span><br><span class="line">                    </span><br><span class="line">        &#125;&#125;</span><br><span class="line">    ])</span><br><span class="line">    tray.setToolTip(&#x27;邻盛企业管家 你的企业好帮手！&#x27;)</span><br><span class="line">    tray.setContextMenu(contextMenu)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// This method will be called when Electron has finished</span><br><span class="line">// initialization and is ready to create browser windows.</span><br><span class="line">// Some APIs can only be used after this event occurs.</span><br><span class="line">app.on(&#x27;ready&#x27;, createWindow)</span><br><span class="line"></span><br><span class="line">// Quit when all windows are closed.</span><br><span class="line">app.on(&#x27;window-all-closed&#x27;, function() &#123;</span><br><span class="line">    // On OS X it is common for applications and their menu bar</span><br><span class="line">    // to stay active until the user quits explicitly with Cmd + Q</span><br><span class="line">    if (process.platform !== &#x27;darwin&#x27;) &#123;</span><br><span class="line">        app.quit()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.on(&#x27;activate&#x27;, function() &#123;</span><br><span class="line">    // On OS X it&#x27;s common to re-create a window in the app when the</span><br><span class="line">    // dock icon is clicked and there are no other windows open.</span><br><span class="line">    if (mainWindow === null) &#123;</span><br><span class="line">        createWindow()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//登录窗口最小化</span><br><span class="line">ipcMain.on(&#x27;window-min&#x27;,function()&#123;</span><br><span class="line">  mainWindow.minimize();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">//重新设置大小</span><br><span class="line">ipcMain.on(&#x27;window-reset&#x27;,function()&#123;</span><br><span class="line">  console.log(initobj.width, initobj.height)</span><br><span class="line"></span><br><span class="line">  mainWindow.setSize(initobj.width, initobj.height)</span><br><span class="line">  mainWindow.center()</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">//登录窗口最大化</span><br><span class="line">ipcMain.on(&#x27;window-max&#x27;,function(data)&#123;</span><br><span class="line"></span><br><span class="line">  console.log(&#x27;data&#x27;,data)</span><br><span class="line"></span><br><span class="line">  if(mainWindow.isMaximized())&#123;</span><br><span class="line">      mainWindow.restore();  </span><br><span class="line">  &#125;else&#123;</span><br><span class="line">      mainWindow.maximize(); </span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">ipcMain.on(&#x27;window-close&#x27;,function()&#123;</span><br><span class="line">  mainWindow.close();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">// 检查登陆</span><br><span class="line">ipcMain.on(&#x27;islogin&#x27;,function()&#123;</span><br><span class="line">           session.defaultSession.cookies.get(&#123;url:domain,name:&#x27;sns_username&#x27;&#125;, function(error, cookies) &#123;</span><br><span class="line">                 let  domainObj=cookies                             </span><br><span class="line">                 // console.log(&#x27;ddd&#x27;,domainObj[0].value)</span><br><span class="line">                 mainWindow.webContents.send(&#x27;islogin&#x27;,domainObj)</span><br><span class="line">           &#125;);</span><br><span class="line">&#125;)</span><br><span class="line">// 检查网络</span><br><span class="line">ipcMain.on(&#x27;testNetwork&#x27;,function()&#123;</span><br><span class="line">           request(options, function (err, res, body) &#123;</span><br><span class="line">            if (err) &#123;</span><br><span class="line">              console.log(err)</span><br><span class="line">            &#125;else &#123;</span><br><span class="line">              mainWindow.webContents.send(&#x27;testNetwork&#x27;,body)</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">// 注销登陆</span><br><span class="line">ipcMain.on(&#x27;loginout&#x27;,function()&#123;</span><br><span class="line">    session.defaultSession.cookies.get(&#123;url:domain&#125;, function(error, cookies) &#123;</span><br><span class="line"></span><br><span class="line">                       let  domainObj=cookies</span><br><span class="line">                       for (var i in domainObj)&#123;</span><br><span class="line">                         console.log(i,&#x27;:&#x27;,domainObj[i])</span><br><span class="line">                         session.defaultSession.cookies.remove(domain,domainObj[i].name, function(data) &#123;</span><br><span class="line">                                       console.log(&#x27;remove&#x27;,data);</span><br><span class="line">                          &#125;);</span><br><span class="line">                         </span><br><span class="line">                       &#125;</span><br><span class="line">                       //console.log(&#x27;ddd&#x27;,domainObj)</span><br><span class="line">      &#125;);</span><br><span class="line">    //app.quit();</span><br><span class="line">    //mainWindow.loadURL(loginpath)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 消息通知 函数</span><br><span class="line">function notifly(title,body,ico)&#123;</span><br><span class="line">  const opt = &#123;</span><br><span class="line">      icon: ico,</span><br><span class="line">      title: title,</span><br><span class="line">      body: body,              </span><br><span class="line">  &#125;</span><br><span class="line">  const m = new Notification(opt);</span><br><span class="line">  m.show()</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 可点击事件的通知</span><br><span class="line">function notiflyclick(title,body,callback)&#123;</span><br><span class="line">   notify(title, &#123; body: body &#125;, () =&gt; &#123;</span><br><span class="line">                    console.log(&#x27;The notification got clicked on!&#x27;)</span><br><span class="line">                    callback()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//自动获取图标</span><br><span class="line">function getico(path)&#123;</span><br><span class="line">  let str = path.substring(path.lastIndexOf(&quot;.&quot;)+1);</span><br><span class="line">  switch (str) &#123;</span><br><span class="line">    case &#x27;doc&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/doc.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;docx&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/doc.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;xls&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/excel.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;xlsx&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/excel.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;csv&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/excel.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;exe&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/exe.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;html&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/file_html.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;htm&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/file_html.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;pptx&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/ppt.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;ppx&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/ppt.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;rar&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/rar.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;zip&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/zip.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;gz&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/zip.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;tar&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/zip.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;pdf&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/pdf.png&#x27;;</span><br><span class="line">      break;    </span><br><span class="line">     case &#x27;png&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/png.png&#x27;;</span><br><span class="line">      break;    </span><br><span class="line">     case &#x27;jpg&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/jpg.png&#x27;;</span><br><span class="line">      break;    </span><br><span class="line">     case &#x27;gif&#x27;:</span><br><span class="line">      return __dirname+&#x27;\\ioc/format/gif.png&#x27;;</span><br><span class="line">      break;    </span><br><span class="line">    default:</span><br><span class="line">       return __dirname+&#x27;\\ioc/format/file.png&#x27;;</span><br><span class="line">      break;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">//================  升级</span><br><span class="line"></span><br><span class="line">autoUpdater.setFeedURL(&#x27;http://www.linksame.com/release/&#x27;);</span><br><span class="line">// 检测更新，在你想要检查更新的时候执行，renderer事件触发后的操作自行编写</span><br><span class="line">function updateHandle()&#123;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    autoUpdater.on(&#x27;error&#x27;, function(error)&#123;</span><br><span class="line">      sendUpdateMessage(message.error)</span><br><span class="line">    &#125;);</span><br><span class="line">    autoUpdater.on(&#x27;checking-for-update&#x27;, function(info) &#123;</span><br><span class="line">      console.log(&#x27;checking for update:::&#x27;,info)</span><br><span class="line">      sendUpdateMessage(message.checking)</span><br><span class="line">    &#125;);</span><br><span class="line">    autoUpdater.on(&#x27;update-available&#x27;, function(info) &#123;</span><br><span class="line">        console.log(&#x27;update-available:::&#x27;,info)</span><br><span class="line">        upwin.webContents.send(&#x27;checkinfo&#x27;, info)</span><br><span class="line">        sendUpdateMessage(message.updateAva)</span><br><span class="line">    &#125;);</span><br><span class="line">    autoUpdater.on(&#x27;update-not-available&#x27;, function(info) &#123;</span><br><span class="line">        sendUpdateMessage(message.updateNotAva)</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    // 更新下载进度事件</span><br><span class="line">    autoUpdater.on(&#x27;download-progress&#x27;, function(progressObj) &#123;</span><br><span class="line">        console.log(&#x27;downloading:&#x27;,progressObj)</span><br><span class="line">        upwin.webContents.send(&#x27;downloadProgress&#x27;, progressObj)</span><br><span class="line">    &#125;)</span><br><span class="line">    autoUpdater.on(&#x27;update-downloaded&#x27;,  function (event, releaseNotes, releaseName, releaseDate, updateUrl, quitAndUpdate) &#123;</span><br><span class="line">        ipcMain.on(&#x27;isUpdateNow&#x27;, (e, arg) =&gt; &#123;</span><br><span class="line">            //some code here to handle event</span><br><span class="line">            autoUpdater.quitAndInstall();</span><br><span class="line">        &#125;)</span><br><span class="line">        console.log(releaseNotes, releaseName, releaseDate, updateUrl, quitAndUpdate)</span><br><span class="line">        //upwin.webContents.send(&#x27;isUpdateNow&#x27;)</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    //执行自动更新检查</span><br><span class="line">    //autoUpdater.checkForUpdates();</span><br><span class="line">     ipcMain.on(&quot;checkForUpdate&quot;,()=&gt;&#123;</span><br><span class="line">          //执行自动更新检查 appUpdater.autoDownload = false</span><br><span class="line">          autoUpdater.checkForUpdates();</span><br><span class="line">          //console.log(&#x27;checkinfo:&#x27;,checkinfo)</span><br><span class="line">          </span><br><span class="line">      &#125;)</span><br><span class="line">     //执行下载</span><br><span class="line">    ipcMain.on(&quot;download&quot;,()=&gt;&#123;</span><br><span class="line">          autoUpdater.downloadUpdate()          </span><br><span class="line">      &#125;)</span><br><span class="line">     console.log(&#x27;now check updateing ~~~~&#x27;)</span><br><span class="line">     // autoUpdater.checkForUpdates();</span><br><span class="line"></span><br><span class="line">      //open upgroud dialog</span><br><span class="line">      const modalPath = path.join(&#x27;file://&#x27;, __dirname, &#x27;upgroud.html&#x27;)</span><br><span class="line">      //let win = new BrowserWindow(&#123; width: 705, height: 250,resizable:false,autoHideMenuBar:true,type: &#x27;desktop&#x27;, icon: &#x27;./ioc/download2.png&#x27; &#125;)</span><br><span class="line">      let upwin = new BrowserWindow(&#123; </span><br><span class="line">        width: 705, </span><br><span class="line">        height: 250,</span><br><span class="line">        autoHideMenuBar:true,</span><br><span class="line">        type: &#x27;desktop&#x27;, </span><br><span class="line">        icon: __dirname+&#x27;\\ioc\\upgrate2.png&#x27;,</span><br><span class="line">        resizable:false,</span><br><span class="line">        maximizable:false,</span><br><span class="line">         &#125;)</span><br><span class="line">      //win.setApplicationMenu(null);</span><br><span class="line">      upwin.on(&#x27;close&#x27;, function() &#123; </span><br><span class="line">          </span><br><span class="line">           upwin.webContents.send(&#x27;close&#x27;) </span><br><span class="line">           </span><br><span class="line">           //ipcMain.removeAllListeners([&quot;checkForUpdate&quot;, &quot;download&quot;, &quot;isUpdateNow&quot;])</span><br><span class="line">           upwin = null</span><br><span class="line">           //ipcRenderer.removeAll([&quot;checkForUpdate&quot;, &quot;download&quot;, &quot;isUpdateNow&quot;]);</span><br><span class="line">       &#125;)</span><br><span class="line">      upwin.loadURL(modalPath)</span><br><span class="line">      upwin.show()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 通过main进程发送事件给renderer进程，提示更新信息</span><br><span class="line">// mainWindow = new BrowserWindow()</span><br><span class="line">function sendUpdateMessage(text)&#123;</span><br><span class="line">    console.log(&#x27;text:&#x27;,text)</span><br><span class="line">    //mainWindow.webContents.send(&#x27;message&#x27;, text)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 第一次运行软件 判断网络</span><br><span class="line">function initview()&#123;</span><br><span class="line">                      </span><br><span class="line">&#125;</span><br><span class="line">// 自动随机检查升级包</span><br><span class="line">function checkUp()&#123;</span><br><span class="line">     let checkinfo=autoUpdater.checkForUpdates();</span><br><span class="line">     //console.log(&#x27;checkinfo:&#x27;,checkinfo)</span><br><span class="line">     checkinfo.then(function(data)&#123;</span><br><span class="line">        console.log(&#x27;data:::&#x27;,data.versionInfo.version)</span><br><span class="line">        if(data.versionInfo.version)&#123;</span><br><span class="line">            updateHandle();</span><br><span class="line">        &#125;</span><br><span class="line">     &#125;)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">//checkUp();</span><br><span class="line">//随机时间执行检查升级</span><br><span class="line">let randoms=Math.round(Math.random()*9+1)*60000;</span><br><span class="line">console.log(&#x27;randoms=&#x27;,randoms)</span><br><span class="line">setTimeout(function()&#123;</span><br><span class="line">  checkUp();</span><br><span class="line">&#125;,randoms)</span><br><span class="line">// hi i&#x27;m a vision 1.0.2 hahah</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97"><span class="toc-text">模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E4%BF%A1"><span class="toc-text">通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">本地数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8C%85"><span class="toc-text">打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%87%E7%BA%A7%E5%8C%85%E5%88%B6%E4%BD%9C"><span class="toc-text">升级包制作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-%E5%BA%94%E7%94%A8-%E5%AF%B9%E8%B1%A1"><span class="toc-text">Promise 应用 对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#main-js-%E5%8F%82%E8%80%83"><span class="toc-text">main.js 参考</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/blog/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/saver-live">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+        <li>
+          
+              <a title="twitter" target="_blank" rel="noopener" href="https://x.com/saver_live">
+                <i class="iconfont icon-twitter"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/saver-live">Copyright © 2025 saver</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/blog/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/blog/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/blog/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + electron%20%E5%BC%80%E5%8F%91%E6%8B%86%E5%9D%91%E6%80%BB%E7%BB%93 + '&url=' + https%3A%2F%2Fsaver-live.github.io%2Fblog%2F2025%2F09%2F12%2FElectron-%25E5%25BC%2580%25E5%258F%2591%25E6%258B%2586%25E5%259D%2591%25E6%2580%25BB%25E7%25BB%2593%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://saver-live.github.io/blog/2025/09/12/Electron-%E5%BC%80%E5%8F%91%E6%8B%86%E5%9D%91%E6%80%BB%E7%BB%93/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/blog/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

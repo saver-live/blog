@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="saver" />
+ <meta name="referrer" content="no-referrer">
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  <meta name="description" content="记录生活，分析技术" />
+  
+  
+  
+  <title>
+    
+      Vue项目使用Nginx部署指南 
+      
+      
+      |
+    
+     saver的博客
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+    <link rel="icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/blog/css/main.css">
+
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/blog/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/blog">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img no-lazy src="https://gitee.com/saver-live/cdn/raw/master/images/avatar.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/blog">SAVER</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/blog">
+          <a href="/blog">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/archives/">
+          <a href="/blog/archives/">档案</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/categories/">
+          <a href="/blog/categories/">类别</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/tags/">
+          <a href="/blog/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/about/">
+          <a href="/blog/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/blog/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.0.0/tex-chtml.min.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  
+  
+<script src="/blog/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Vue项目使用Nginx部署指南</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-09-14 08:34:56
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/blog/categories/%E8%BF%90%E7%BB%B4/" title="运维">
+                    <b>#</b> 运维
+                  </a>
+                </span>
+                
+              </span>
+          
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/blog/tags/NGINX/" title="NGINX">
+                    #NGINX
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/blog/tags/VUE/" title="VUE">
+                    #VUE
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="部署-Vue-项目"><a href="#部署-Vue-项目" class="headerlink" title="部署 Vue 项目"></a>部署 Vue 项目</h1><ol>
+<li><p>构建 Vue 项目:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+<p>将生成的 dist 文件夹复制到 Nginx 的 html 目录中:</p>
+<ul>
+<li><p>默认路径: C:\nginx\html\dist</p>
+</li>
+<li><p>或者修改配置文件中的 root 指令指向您的实际路径</p>
+</li>
+</ul>
+</li>
+</ol>
+<h1 id="配置-Nginx"><a href="#配置-Nginx" class="headerlink" title="配置 Nginx"></a>配置 Nginx</h1><ol>
+<li><p>备份原始配置文件: C:\nginx\conf\nginx.conf</p>
+</li>
+<li><p>用下面的配置替换原文件内容</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">#windows版nginx配置文件</span><br><span class="line"># 用户设置（Windows中通常注释掉）</span><br><span class="line">#user  nobody;</span><br><span class="line"></span><br><span class="line"># 工作进程数（Windows中建议设置为1）</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line"># 错误日志路径（Windows路径）</span><br><span class="line">error_log  logs/error.log;</span><br><span class="line">#error_log  logs/error.log  notice;</span><br><span class="line">#error_log  logs/error.log  info;</span><br><span class="line"></span><br><span class="line"># 进程ID文件</span><br><span class="line">pid        logs/nginx.pid;</span><br><span class="line"></span><br><span class="line"># 事件模块配置</span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># HTTP主配置</span><br><span class="line">http &#123;</span><br><span class="line">    # 包含MIME类型定义</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    # 日志格式</span><br><span class="line">    log_format  main  &#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span><br><span class="line">                      &#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span><br><span class="line">                      &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;</span><br><span class="line"></span><br><span class="line">    # 访问日志路径</span><br><span class="line">    access_log  logs/access.log  main;</span><br><span class="line"></span><br><span class="line">    # 性能优化相关</span><br><span class="line">    sendfile        on;</span><br><span class="line">    tcp_nopush      on;</span><br><span class="line">    tcp_nodelay     on;</span><br><span class="line">    # 连接超时时间</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line">    # Gzip压缩配置</span><br><span class="line">    gzip  on;</span><br><span class="line">    gzip_disable &quot;msie6&quot;;</span><br><span class="line">    gzip_vary on;</span><br><span class="line">    gzip_proxied any;</span><br><span class="line">    gzip_comp_level 6;</span><br><span class="line">    gzip_buffers 16 8k;</span><br><span class="line">    gzip_http_version 1.1;</span><br><span class="line">    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;</span><br><span class="line"></span><br><span class="line">    # 服务器配置</span><br><span class="line">    server &#123;</span><br><span class="line">        # 监听端口</span><br><span class="line">        listen       80;</span><br><span class="line">        # 服务器名称（替换为您的域名或本地IP）</span><br><span class="line">        server_name  localhost;</span><br><span class="line">        # Vue项目构建后的文件所在目录（请根据实际路径修改）</span><br><span class="line">        root   html;</span><br><span class="line">        # 默认文档</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line"></span><br><span class="line">        # 字符集</span><br><span class="line">        charset utf-8;</span><br><span class="line"></span><br><span class="line">        # 静态资源缓存配置</span><br><span class="line">        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ &#123;</span><br><span class="line">            expires 1y;</span><br><span class="line">            add_header Cache-Control &quot;public, immutable&quot;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # 处理Vue Router History模式</span><br><span class="line">        location / &#123;</span><br><span class="line">            try_files $uri $uri/ /index.html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # 反向代理配置：将/prod-api代理到后端服务</span><br><span class="line">        location /prod-api/ &#123;</span><br><span class="line">            # 代理到后端服务</span><br><span class="line">            proxy_pass http://127.0.0.1:8080/;</span><br><span class="line">            # 代理请求头设置</span><br><span class="line">            proxy_set_header Host $host;</span><br><span class="line">            proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">            proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">            # 代理超时设置</span><br><span class="line">            proxy_connect_timeout 60s;</span><br><span class="line">            proxy_send_timeout 60s;</span><br><span class="line">            proxy_read_timeout 60s;</span><br><span class="line">            # 代理缓冲设置</span><br><span class="line">            proxy_buffering on;</span><br><span class="line">            proxy_buffer_size 4k;</span><br><span class="line">            proxy_buffers 8 4k;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # 错误页面配置</span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # 可选：HTTPS配置（如果需要）</span><br><span class="line">    # server &#123;</span><br><span class="line">    #     listen       443 ssl;</span><br><span class="line">    #     server_name  localhost;</span><br><span class="line">    #</span><br><span class="line">    #     ssl_certificate      cert.pem;  # SSL证书路径</span><br><span class="line">    #     ssl_certificate_key  cert.key;  # SSL密钥路径</span><br><span class="line">    #</span><br><span class="line">    #     ssl_session_cache    shared:SSL:1m;</span><br><span class="line">    #     ssl_session_timeout  5m;</span><br><span class="line">    #</span><br><span class="line">    #     ssl_ciphers  HIGH:!aNULL:!MD5;</span><br><span class="line">    #     ssl_prefer_server_ciphers  on;</span><br><span class="line">    #</span><br><span class="line">    #     # 其余配置与HTTP服务器相同</span><br><span class="line">    #     location / &#123;</span><br><span class="line">    #         root   html;</span><br><span class="line">    #         index  index.html index.htm;</span><br><span class="line">    #     &#125;</span><br><span class="line">    # &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>linux版nginx配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line">#linux版nginx配置文件</span><br><span class="line"># 定义用户和工作进程数</span><br><span class="line">user nginx;</span><br><span class="line">worker_processes auto;</span><br><span class="line">error_log /var/log/nginx/error.log;</span><br><span class="line">pid /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line"># 事件模块配置</span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections 1024;</span><br><span class="line">    use epoll;</span><br><span class="line">    multi_accept on;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># HTTP主配置</span><br><span class="line">http &#123;</span><br><span class="line">    # 基础设置</span><br><span class="line">    include /etc/nginx/mime.types;</span><br><span class="line">    default_type application/octet-stream;</span><br><span class="line">    # 日志格式</span><br><span class="line">    log_format main &#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span><br><span class="line">                   &#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span><br><span class="line">                   &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;</span><br><span class="line">    access_log /var/log/nginx/access.log main;</span><br><span class="line">    # 性能优化相关</span><br><span class="line">    sendfile on;</span><br><span class="line">    tcp_nopush on;</span><br><span class="line">    tcp_nodelay on;</span><br><span class="line">    keepalive_timeout 65;</span><br><span class="line">    types_hash_max_size 2048;</span><br><span class="line">    server_tokens off;</span><br><span class="line">    # Gzip压缩配置</span><br><span class="line">    gzip on;</span><br><span class="line">    gzip_disable &quot;msie6&quot;;</span><br><span class="line">    gzip_vary on;</span><br><span class="line">    gzip_proxied any;</span><br><span class="line">    gzip_comp_level 6;</span><br><span class="line">    gzip_buffers 16 8k;</span><br><span class="line">    gzip_http_version 1.1;</span><br><span class="line">    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;</span><br><span class="line"></span><br><span class="line">    # 服务器配置</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80;</span><br><span class="line">        server_name your-domain.com www.your-domain.com; # 请替换为您的域名</span><br><span class="line">        root /usr/share/nginx/html; # Vue项目构建后的文件所在目录</span><br><span class="line">        index index.html index.htm;</span><br><span class="line"></span><br><span class="line">        # 安全相关头部</span><br><span class="line">        add_header X-Frame-Options SAMEORIGIN;</span><br><span class="line">        add_header X-Content-Type-Options nosniff;</span><br><span class="line">        add_header X-XSS-Protection &quot;1; mode=block&quot;;</span><br><span class="line"></span><br><span class="line">        # 静态资源缓存</span><br><span class="line">        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ &#123;</span><br><span class="line">            expires 1y;</span><br><span class="line">            add_header Cache-Control &quot;public, immutable&quot;;</span><br><span class="line">            try_files $uri $uri/ =404;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # 处理Vue Router History模式</span><br><span class="line">        location / &#123;</span><br><span class="line">            try_files $uri $uri/ /index.html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # 反向代理配置：将/prod-api代理到后端服务</span><br><span class="line">        location /prod-api/ &#123;</span><br><span class="line">            proxy_pass http://127.0.0.1:8080/; # 注意结尾的斜杠，确保路径正确传递</span><br><span class="line">            proxy_set_header Host $host;</span><br><span class="line">            proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">            proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line"></span><br><span class="line">            # 可选：代理超时设置</span><br><span class="line">            proxy_connect_timeout 60s;</span><br><span class="line">            proxy_send_timeout 60s;</span><br><span class="line">            proxy_read_timeout 60s;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # 错误页面配置</span><br><span class="line">        error_page 500 502 503 504 /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root /usr/share/nginx/html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # 禁止访问隐藏文件</span><br><span class="line">        location ~ /\. &#123;</span><br><span class="line">            deny all;</span><br><span class="line">            access_log off;</span><br><span class="line">            log_not_found off;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # 可选的HTTPS配置（如果需要）</span><br><span class="line">    # server &#123;</span><br><span class="line">    #     listen 443 ssl http2;</span><br><span class="line">    #     server_name your-domain.com www.your-domain.com;</span><br><span class="line">    #</span><br><span class="line">    #     ssl_certificate /path/to/your/certificate.crt;</span><br><span class="line">    #     ssl_certificate_key /path/to/your/private.key;</span><br><span class="line">    #</span><br><span class="line">    #     # SSL配置（使用现代安全设置）</span><br><span class="line">    #     ssl_protocols TLSv1.2 TLSv1.3;</span><br><span class="line">    #     ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384;</span><br><span class="line">    #     ssl_prefer_server_ciphers off;</span><br><span class="line">    #</span><br><span class="line">    #     # 其余配置与HTTP服务器相同</span><br><span class="line">    #     # ...</span><br><span class="line">    #</span><br><span class="line">    #     # 强制HTTP重定向到HTTPS（可选）</span><br><span class="line">    #     # if ($scheme != &quot;https&quot;) &#123;</span><br><span class="line">    #     #     return 301 https://$host$request_uri;</span><br><span class="line">    #     # &#125;</span><br><span class="line">    # &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>根据您的实际路径修改 root 指令:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 如果您的Vue项目构建文件在D盘的vue-app目录</span><br><span class="line">root   D:/vue-app/dist;</span><br></pre></td></tr></table></figure></li>
+<li>启动和测试 Nginx<br>4.1. 打开命令提示符(CMD)或PowerShell<br>4.2. 切换到 Nginx 目录:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd C:\nginx</span><br></pre></td></tr></table></figure>
+4.3 启动 Nginx:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start nginx</span><br></pre></td></tr></table></figure>
+4.4 测试配置是否正确:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -t</span><br></pre></td></tr></table></figure>
+4.5 重新加载配置(修改配置后):<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+4.6 停止 Nginx:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s stop</span><br></pre></td></tr></table></figure></li>
+<li>验证部署<br>5.1 打开浏览器访问: <a target="_blank" rel="noopener" href="http://localhost/">http://localhost</a><br>5.2 检查 Vue 应用是否正常加载<br>5.3 测试 API 代理是否工作:<ul>
+<li>访问: <a target="_blank" rel="noopener" href="http://localhost/prod-api/xxx">http://localhost/prod-api/xxx</a></li>
+<li>应该被代理到: <a target="_blank" rel="noopener" href="http://127.0.0.1:8080/xxx">http://127.0.0.1:8080/xxx</a></li>
+</ul>
+</li>
+</ol>
+<h1 id="常见问题解决"><a href="#常见问题解决" class="headerlink" title="常见问题解决"></a>常见问题解决</h1><ol>
+<li><p>端口占用问题:<br>如果80端口被占用，可以修改监听端口:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">listen       8080;  # 改为其他端口</span><br></pre></td></tr></table></figure>
+<p>然后通过 <a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080</a> 访问</p>
+</li>
+<li><p>文件路径问题:<br>Windows 路径使用正斜杠 &#x2F; 或双反斜杠 \<br>示例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root   C:/nginx/html/dist;  # 正斜杠</span><br><span class="line">root   C:\\nginx\\html\\dist;  # 双反斜杠</span><br></pre></td></tr></table></figure></li>
+<li><p>权限问题:<br>以管理员身份运行命令提示符<br>或者将 Nginx 安装到用户有写入权限的目录</p>
+</li>
+<li><p>代理不工作:<br>确保后端服务运行在 <a target="_blank" rel="noopener" href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a><br>检查防火墙是否阻止了连接</p>
+</li>
+</ol>
+<blockquote>
+<p>这个配置文件已经针对 Windows 环境进行了优化，可以直接使用。根据您的实际项目路径和后端服务地址进行适当调整即可。</p>
+</blockquote>
+
+      </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2-Vue-%E9%A1%B9%E7%9B%AE"><span class="toc-text">部署 Vue 项目</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-Nginx"><span class="toc-text">配置 Nginx</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="toc-text">常见问题解决</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/blog/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/saver-live">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+        <li>
+          
+              <a title="twitter" target="_blank" rel="noopener" href="https://x.com/saver_live">
+                <i class="iconfont icon-twitter"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/saver-live">Copyright © 2025 saver</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/blog/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/blog/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/blog/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8Nginx%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97 + '&url=' + https%3A%2F%2Fsaver-live.github.io%2Fblog%2F2025%2F09%2F12%2FVue%25E9%25A1%25B9%25E7%259B%25AE%25E4%25BD%25BF%25E7%2594%25A8Nginx%25E9%2583%25A8%25E7%25BD%25B2%25E6%258C%2587%25E5%258D%2597%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://saver-live.github.io/blog/2025/09/12/Vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8Nginx%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/blog/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="saver" />
+ <meta name="referrer" content="no-referrer">
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  <meta name="description" content="记录生活，分析技术" />
+  
+  
+  
+  <title>
+    
+      MySQL全表扫描的原因 
+      
+      
+      |
+    
+     saver的博客
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+    <link rel="icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/blog/css/main.css">
+
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/blog/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/blog">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img no-lazy src="https://gitee.com/saver-live/cdn/raw/master/images/avatar.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/blog">SAVER</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/blog">
+          <a href="/blog">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/archives/">
+          <a href="/blog/archives/">档案</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/categories/">
+          <a href="/blog/categories/">类别</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/tags/">
+          <a href="/blog/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/about/">
+          <a href="/blog/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/blog/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.0.0/tex-chtml.min.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  
+  
+<script src="/blog/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">MySQL全表扫描的原因</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-09-12 18:22:21
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/blog/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" title="数据库">
+                    <b>#</b> 数据库
+                  </a>
+                </span>
+                
+              </span>
+          
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/blog/tags/MYSQL/" title="MYSQL">
+                    #MYSQL
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>全表扫描是数据库搜寻表的每一条记录的过程，直到所有符合给定条件的记录返回为止。通常在数据库中，对无索引的表进行查询一般称为全表扫描；然而有时候我们即便添加了索引，但当我们的SQL语句写的不合理的时候也会造成全表扫描。<br>以下是经常会造成全表扫描的SQL语句及应对措施： </p>
+<h2 id="1-使用null做为判断条件"><a href="#1-使用null做为判断条件" class="headerlink" title="1. 使用null做为判断条件"></a>1. 使用null做为判断条件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如：select account from member where nickname = null;</span><br></pre></td></tr></table></figure>
+<p>建议在设计字段时尽量将字段的默认值设为0，改为select account where nickname &#x3D; 0; </p>
+<h2 id="2-左模糊查询Like-XXX"><a href="#2-左模糊查询Like-XXX" class="headerlink" title="2. 左模糊查询Like %XXX%"></a>2. 左模糊查询Like %XXX%</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如：select account from member where nickname like ‘%XXX%’ 或者 select account from member where nickname like ‘%XXX’</span><br></pre></td></tr></table></figure>
+<p>建议使用select account from member where nickname like ‘XXX%’，如果必须要用到做查询，需要评估对当前表全表扫描造成的后果； 刘加东@酷听说 </p>
+<h2 id="3-使用or做为连接条件"><a href="#3-使用or做为连接条件" class="headerlink" title="3. 使用or做为连接条件"></a>3. 使用or做为连接条件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如：select account from member where id = 1 or id = 2; </span><br></pre></td></tr></table></figure>
+<p>建议使用union all,改为 select account from member where id &#x3D; 1 union all select account from member where id &#x3D; 2; </p>
+<h2 id="4-使用in时-not-in"><a href="#4-使用in时-not-in" class="headerlink" title="4. 使用in时(not in)"></a>4. 使用in时(not in)</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如：select account from member where id in (1,2,3) </span><br></pre></td></tr></table></figure>
+<p>如果是连续数据，可以改为select account where id between 1 and 3;当数据较少时也可以参考union用法； <br>或者：select account from member where id in (select accountid from department where id &#x3D; 3 )，可以改为select account from member where id exsits (select accountid from department where id &#x3D; 3) <br>not in 可以对应 not exists; </p>
+<h2 id="5-使用not-in时"><a href="#5-使用not-in时" class="headerlink" title="5.使用not in时"></a>5.使用not in时</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如select account where id not in (1,2,3) </span><br></pre></td></tr></table></figure>
+<h2 id="6-使用！-或时"><a href="#6-使用！-或时" class="headerlink" title="6.使用！&#x3D;或&lt;&gt;时"></a>6.使用！&#x3D;或&lt;&gt;时</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">建议使用 &lt;,&lt;=,=,&gt;,&gt;=,between等； </span><br></pre></td></tr></table></figure>
+<h2 id="7-对字段有操作时也会引起权标索引"><a href="#7-对字段有操作时也会引起权标索引" class="headerlink" title="7.对字段有操作时也会引起权标索引"></a>7.对字段有操作时也会引起权标索引</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如select account where salary * 0.8 = 1000 或者 select account where sustring(nickname,1,3) = ‘zhangxiaolong’; </span><br></pre></td></tr></table></figure>
+<h2 id="8-使用count-时"><a href="#8-使用count-时" class="headerlink" title="8.使用count(*)时"></a>8.使用count(*)时</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如select count(*) from member； </span><br></pre></td></tr></table></figure>
+<p>建议使用select count(1) from member; </p>
+<h2 id="9-使用参数做为查询条件时"><a href="#9-使用参数做为查询条件时" class="headerlink" title="9.使用参数做为查询条件时"></a>9.使用参数做为查询条件时</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如select account from member where nickname = @name </span><br></pre></td></tr></table></figure>
+<p>由于SQL语句在编译执行时并不确定参数，这将无法通过索引进行数据查询，所以尽量避免； 刘加东@酷听说<br>当不规范的写法造成全表扫描时，会造成CPU和内存的额外消耗，甚至会导致服务器崩溃。在团队协作中难免会遇到一些初学者，除了安排合理的任务外，资深的工程师也要做好Code Review。否则当我们有海量数据时，不规范的语句会带来很严重的后果，一定要慎重、慎重。</p>
+
+      </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BD%BF%E7%94%A8null%E5%81%9A%E4%B8%BA%E5%88%A4%E6%96%AD%E6%9D%A1%E4%BB%B6"><span class="toc-text">1. 使用null做为判断条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B7%A6%E6%A8%A1%E7%B3%8A%E6%9F%A5%E8%AF%A2Like-XXX"><span class="toc-text">2. 左模糊查询Like %XXX%</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BD%BF%E7%94%A8or%E5%81%9A%E4%B8%BA%E8%BF%9E%E6%8E%A5%E6%9D%A1%E4%BB%B6"><span class="toc-text">3. 使用or做为连接条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BD%BF%E7%94%A8in%E6%97%B6-not-in"><span class="toc-text">4. 使用in时(not in)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%BD%BF%E7%94%A8not-in%E6%97%B6"><span class="toc-text">5.使用not in时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E4%BD%BF%E7%94%A8%EF%BC%81-%E6%88%96%E6%97%B6"><span class="toc-text">6.使用！&#x3D;或&lt;&gt;时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%AF%B9%E5%AD%97%E6%AE%B5%E6%9C%89%E6%93%8D%E4%BD%9C%E6%97%B6%E4%B9%9F%E4%BC%9A%E5%BC%95%E8%B5%B7%E6%9D%83%E6%A0%87%E7%B4%A2%E5%BC%95"><span class="toc-text">7.对字段有操作时也会引起权标索引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E4%BD%BF%E7%94%A8count-%E6%97%B6"><span class="toc-text">8.使用count(*)时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E4%BD%BF%E7%94%A8%E5%8F%82%E6%95%B0%E5%81%9A%E4%B8%BA%E6%9F%A5%E8%AF%A2%E6%9D%A1%E4%BB%B6%E6%97%B6"><span class="toc-text">9.使用参数做为查询条件时</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/blog/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/saver-live">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+        <li>
+          
+              <a title="twitter" target="_blank" rel="noopener" href="https://x.com/saver_live">
+                <i class="iconfont icon-twitter"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/saver-live">Copyright © 2025 saver</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/blog/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/blog/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/blog/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + MySQL%E5%85%A8%E8%A1%A8%E6%89%AB%E6%8F%8F%E7%9A%84%E5%8E%9F%E5%9B%A0 + '&url=' + https%3A%2F%2Fsaver-live.github.io%2Fblog%2F2025%2F09%2F12%2FMySQL%25E5%2585%25A8%25E8%25A1%25A8%25E6%2589%25AB%25E6%258F%258F%25E7%259A%2584%25E5%258E%259F%25E5%259B%25A0%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://saver-live.github.io/blog/2025/09/12/MySQL%E5%85%A8%E8%A1%A8%E6%89%AB%E6%8F%8F%E7%9A%84%E5%8E%9F%E5%9B%A0/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/blog/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

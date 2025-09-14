@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="saver" />
+ <meta name="referrer" content="no-referrer">
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  <meta name="description" content="记录生活，分析技术" />
+  
+  
+  
+  <title>
+    
+      前后端分离下解决文件下载权限问题 
+      
+      
+      |
+    
+     saver的博客
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+    <link rel="icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/blog/css/main.css">
+
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/blog/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/blog">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img no-lazy src="https://gitee.com/saver-live/cdn/raw/master/images/avatar.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/blog">SAVER</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/blog">
+          <a href="/blog">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/archives/">
+          <a href="/blog/archives/">档案</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/categories/">
+          <a href="/blog/categories/">类别</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/tags/">
+          <a href="/blog/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/about/">
+          <a href="/blog/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/blog/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.0.0/tex-chtml.min.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  
+  
+<script src="/blog/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">前后端分离下解决文件下载权限问题</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-09-15 03:50:01
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/blog/categories/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E4%B8%8B%E8%BD%BD%E6%9D%83%E9%99%90/" title="前后端分离下载权限">
+                    <b>#</b> 前后端分离下载权限
+                  </a>
+                </span>
+                
+              </span>
+          
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/blog/tags/JAVA/" title="JAVA">
+                    #JAVA
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><h1 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h1><p>前后端分离框架中，前端在发起Ajax请求时，在Header携带Token值，后端获取该Token进行权限校验。</p>
+<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>在下载文件的场景，大部分浏览器是不支持Ajax请求文件下载，所以通常做法是直接请求下载地址，这时候是无法通过代码设置Header的参数，也就是无法知道当前用户信息，如何进行权限控制？</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>该问题的痛点是数据权限问题。</p>
+<h1 id="初步思路"><a href="#初步思路" class="headerlink" title="初步思路"></a>初步思路</h1><ul>
+<li>在用户要下载的时候，先进行权限校验</li>
+<li>权限不足时，进行信息提示</li>
+<li>权限足够时，则为用户生成一次性的下载链接（下载一次后失效，保证数据安全）</li>
+</ul>
+<h1 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h1><ul>
+<li>流程设计</li>
+<li>抽象功能</li>
+<li>具体实现</li>
+</ul>
+<h1 id="流程设计"><a href="#流程设计" class="headerlink" title="流程设计"></a>流程设计</h1><p>业务模块前端：业务模块的前端代码，例如用户信息下载的前端代码。<br>业务服务后端：业务模块的后端代码（非介绍重点，所以不做细节区分）。<br>文件服务类：文件服务的业务类，主要是处理业务逻辑，例如：生成下载地址的唯一编号，以及唯一编号映射的参数信息，文件生成。<br>文件控制类：提供统一的下载地址格式，放开权限。<br><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" data-original="https://gitee.com/saver-live/cdn/raw/master/images/0e1bd5b1-8fe2-69d7-d03b-b55d76f58964.png" alt="图片"></p>
+<h1 id="代码设计"><a href="#代码设计" class="headerlink" title="代码设计"></a>代码设计</h1><p>基于框架考虑，以下功能抽象出来：</p>
+<ul>
+<li>持久化数据功能抽象（不同项目的具体情况不同）</li>
+<li>生成文件功能抽象（因为不同业务生成文件的步骤是不一样的）</li>
+</ul>
+<h1 id="代码依赖关系"><a href="#代码依赖关系" class="headerlink" title="代码依赖关系"></a>代码依赖关系</h1><p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" data-original="https://gitee.com/saver-live/cdn/raw/master/images/34444219-0165-f01d-35a4-2b634bd701f5.png" alt="图片"></p>
+<h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><p>DownloadController - 文件下载控制器，不做权限控制</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">package com.accloud.core.file.download.controller;</span><br><span class="line"></span><br><span class="line">import com.accloud.core.file.download.FileResult;</span><br><span class="line">import com.accloud.core.file.download.service.DownloadService;</span><br><span class="line">import lombok.extern.slf4j.Slf4j;</span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.stereotype.Controller;</span><br><span class="line">import org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.PathVariable;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"></span><br><span class="line">import javax.servlet.http.HttpServletResponse;</span><br><span class="line">import java.io.BufferedOutputStream;</span><br><span class="line">import java.io.ByteArrayOutputStream;</span><br><span class="line">import java.io.FileInputStream;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.OutputStream;</span><br><span class="line">import java.net.URLEncoder;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 文件下载控制器</span><br><span class="line"> *</span><br><span class="line"> * @author guoyu.huang</span><br><span class="line"> * @since 2020-10-16</span><br><span class="line"> */</span><br><span class="line">@Slf4j</span><br><span class="line">@Controller</span><br><span class="line">@RequestMapping(&quot;/download&quot;)</span><br><span class="line">public class DownloadController &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private DownloadService downloadService;</span><br><span class="line"></span><br><span class="line">    @GetMapping(&quot;/&#123;code&#125;&quot;)</span><br><span class="line">    public void download(@PathVariable(value = &quot;code&quot;) String code, HttpServletResponse response) throws IOException &#123;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            FileResult fileResult = downloadService.getFile(code);</span><br><span class="line">            String filename = fileResult.getDownloadFilename();</span><br><span class="line">            response.setHeader(&quot;content-type&quot;, &quot;application/octet-stream&quot;);</span><br><span class="line">            response.setContentType(&quot;application/octet-stream;charset=UTF-8&quot;);</span><br><span class="line">            response.setHeader(&quot;Content-Disposition&quot;, &quot;attachment;filename=&quot; + URLEncoder.encode(filename, &quot;UTF-8&quot;));</span><br><span class="line">            response.setCharacterEncoding(&quot;UTF-8&quot;);</span><br><span class="line"></span><br><span class="line">            FileInputStream fis = new FileInputStream(fileResult.getFile());</span><br><span class="line">            ByteArrayOutputStream bos = new ByteArrayOutputStream();</span><br><span class="line">            byte[] b = new byte[1024];</span><br><span class="line">            int n;</span><br><span class="line">            while ((n = fis.read(b)) != -1) &#123;</span><br><span class="line">                bos.write(b, 0, n);</span><br><span class="line">            &#125;</span><br><span class="line">            fis.close();</span><br><span class="line">            bos.close();</span><br><span class="line">            byte[] fileByte = bos.toByteArray();</span><br><span class="line">            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());</span><br><span class="line">            toClient.write(fileByte);</span><br><span class="line">            toClient.flush();</span><br><span class="line">            toClient.close();</span><br><span class="line"></span><br><span class="line">            if (fileResult.isRemoveFileAfterDownload()) &#123;</span><br><span class="line">                fileResult.getFile().delete();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            log.error(e.getMessage());</span><br><span class="line">            response.reset();</span><br><span class="line">            response.setCharacterEncoding(&quot;UTF-8&quot;);</span><br><span class="line">            response.setContentType(&quot;application/json;charset=utf-8&quot;);</span><br><span class="line">            response.getWriter().print(e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>DownloadService - 文件下载控制器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">package com.accloud.core.file.download.service;</span><br><span class="line"></span><br><span class="line">import com.accloud.core.file.download.FileResult;</span><br><span class="line">import com.accloud.core.file.download.code.DownloadCodeContent;</span><br><span class="line">import com.accloud.core.file.download.code.IDownloadCodeService;</span><br><span class="line">import com.accloud.core.file.handler.IFileHandler;</span><br><span class="line">import com.accloud.core.exception.BusinessException;</span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.beans.factory.annotation.Value;</span><br><span class="line">import org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @author guoyu.huang</span><br><span class="line"> * @since 2020-10-16</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class DownloadService &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private IDownloadCodeService downloadCodeService;</span><br><span class="line"></span><br><span class="line">    @Autowired(required = false)</span><br><span class="line">    private List&lt;IFileHandler&gt; fileHandlerList;</span><br><span class="line"></span><br><span class="line">    @Value(&quot;$&#123;downloadServer&#125;&quot;)</span><br><span class="line">    private String downloadServerPath;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 获取下载地址</span><br><span class="line">     *</span><br><span class="line">     * @param type</span><br><span class="line">     * @param parameter</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public String getDownloadUrl(String type, String parameter) &#123;</span><br><span class="line">        String code = downloadCodeService.buildCode(type, parameter);</span><br><span class="line">        return downloadServerPath + &quot;download/&quot; + code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 获取文件</span><br><span class="line">     *</span><br><span class="line">     * @param code</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public FileResult getFile(String code) &#123;</span><br><span class="line">        DownloadCodeContent content = downloadCodeService.getContent(code);</span><br><span class="line">        if (content == null) &#123;</span><br><span class="line">            throw new BusinessException(&quot;无此文件&quot;);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            downloadCodeService.delete(code);</span><br><span class="line">            if (fileHandlerList == null) &#123;</span><br><span class="line">                throw new BusinessException(&quot;功能异常，目前文件处理器列表为空&quot;);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line"></span><br><span class="line">                for (IFileHandler fileHandler : fileHandlerList) &#123;</span><br><span class="line">                    if (fileHandler.handle(content.getType())) &#123;</span><br><span class="line">                        return fileHandler.getFileResult(content.getParameter());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                throw new BusinessException(&quot;功能异常，无法处理类型为：%s 的文件&quot;, content.getType());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>FileResult - 文件结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 文件结果</span><br><span class="line"> *</span><br><span class="line"> * @author guoyu.huang</span><br><span class="line"> * @since 2020-10-16</span><br><span class="line"> */</span><br><span class="line">@NoArgsConstructor</span><br><span class="line">@RequiredArgsConstructor</span><br><span class="line">@Data</span><br><span class="line">public class FileResult &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 下载的文件名</span><br><span class="line">     */</span><br><span class="line">    @NonNull</span><br><span class="line">    private String downloadFilename;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 文件</span><br><span class="line">     */</span><br><span class="line">    @NonNull</span><br><span class="line">    private File file;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 下载后是否删除文件</span><br><span class="line">     */</span><br><span class="line">    private boolean removeFileAfterDownload;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>IFileHandler - 文件生成处理器接口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 文件生成处理器接口</span><br><span class="line"> *</span><br><span class="line"> * @author guoyu.huang</span><br><span class="line"> * @since 2020-10-16</span><br><span class="line"> */</span><br><span class="line">public interface IFileHandler &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 判断能否处理</span><br><span class="line">     *</span><br><span class="line">     * @param type 传入类型，用于判断是否能够处理</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    boolean handle(String type);</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 获取文件结果</span><br><span class="line">     *</span><br><span class="line">     * @param parameter</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    FileResult getFileResult(String parameter);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>IDownloadCodeService - 下载编号接口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 下载编号接口</span><br><span class="line"> *</span><br><span class="line"> * @author guoyu.huang</span><br><span class="line"> * @since 2020-10-26</span><br><span class="line"> */</span><br><span class="line">public interface IDownloadCodeService &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 生成编号</span><br><span class="line">     *</span><br><span class="line">     * @param type</span><br><span class="line">     * @param parameter</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    String buildCode(String type, String parameter);</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 根据编号获取内容</span><br><span class="line">     *</span><br><span class="line">     * @param code</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    DownloadCodeContent getContent(String code);</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 删除编号</span><br><span class="line">     *</span><br><span class="line">     * @param code</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    void delete(String code);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E4%BB%8B%E7%BB%8D"><span class="toc-text">背景介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E6%AD%A5%E6%80%9D%E8%B7%AF"><span class="toc-text">初步思路</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="toc-text">设计思路</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E8%AE%BE%E8%AE%A1"><span class="toc-text">流程设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E8%AE%BE%E8%AE%A1"><span class="toc-text">代码设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"><span class="toc-text">代码依赖关系</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="toc-text">核心代码</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/blog/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/saver-live">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+        <li>
+          
+              <a title="twitter" target="_blank" rel="noopener" href="https://x.com/saver_live">
+                <i class="iconfont icon-twitter"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/saver-live">Copyright © 2025 saver</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/blog/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/blog/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/blog/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E4%B8%8B%E8%A7%A3%E5%86%B3%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98 + '&url=' + https%3A%2F%2Fsaver-live.github.io%2Fblog%2F2025%2F09%2F12%2F%25E5%2589%258D%25E5%2590%258E%25E7%25AB%25AF%25E5%2588%2586%25E7%25A6%25BB%25E4%25B8%258B%25E8%25A7%25A3%25E5%2586%25B3%25E6%2596%2587%25E4%25BB%25B6%25E4%25B8%258B%25E8%25BD%25BD%25E6%259D%2583%25E9%2599%2590%25E9%2597%25AE%25E9%25A2%2598%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://saver-live.github.io/blog/2025/09/12/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%E4%B8%8B%E8%A7%A3%E5%86%B3%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/blog/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

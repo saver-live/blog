@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="saver" />
+ <meta name="referrer" content="no-referrer">
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  <meta name="description" content="记录生活，分析技术" />
+  
+  
+  
+  <title>
+    
+      microsoft office url方案 
+      
+      
+      |
+    
+     saver的博客
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+    <link rel="icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/blog/css/main.css">
+
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/blog/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/blog">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img no-lazy src="https://gitee.com/saver-live/cdn/raw/master/images/avatar.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/blog">SAVER</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/blog">
+          <a href="/blog">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/archives/">
+          <a href="/blog/archives/">档案</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/categories/">
+          <a href="/blog/categories/">类别</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/tags/">
+          <a href="/blog/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/about/">
+          <a href="/blog/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/blog/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.0.0/tex-chtml.min.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  
+  
+<script src="/blog/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">microsoft office url方案</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-09-12 18:37:22
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/blog/categories/%E5%B7%A5%E5%85%B7/" title="工具">
+                    <b>#</b> 工具
+                  </a>
+                </span>
+                
+              </span>
+          
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/blog/tags/Office/" title="Office">
+                    #Office
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>链接：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/office/client-developer/office-uri-schemes">https://docs.microsoft.com/en-us/office/client-developer/office-uri-schemes</a></p>
+<h2 id="1-1摘要"><a href="#1-1摘要" class="headerlink" title="1.1摘要"></a>1.1摘要</h2><p>本文档定义了用于办公生产力应用程序的统一资源标识符（URI）的格式。Microsoft Office 2010 Service Pack 2和更高版本（包括Windows的Microsoft Office 2013和Microsoft SharePoint 2013产品）都支持该方案。iPhone版Office，iPad版Office和Mac版Office 2011也支持此功能。</p>
+<h2 id="1-2引言"><a href="#1-2引言" class="headerlink" title="1.2引言"></a>1.2引言</h2><p>这些URI方案允许使用各种命令来调用Office生产力应用程序。每个应用程序都有不同的命名方案，但是所有方案都遵循相同的URI形成规则（URI架构）。</p>
+<h2 id="1-3-URI模式"><a href="#1-3-URI模式" class="headerlink" title="1.3 URI模式"></a>1.3 URI模式</h2><p>完整架构<br>&lt; 方案名称 &gt;：&lt; 命令名称 &gt;“ |” &lt; 命令参数描述符 &gt;“ |” &lt; 命令参数 &gt;<br>本文档中定义的URI可能具有一个或多个命令参数，每个参数必须同时包含&lt; command-argument-descriptor &gt;和&lt; command-argument &gt;元素，并以竖线（“ |”）字符分隔。当URI中包含多个命令自变量时，必须有一个竖线（“ |”）字符将每个命令自变量与随后的命令自变量分隔开。<br>这些方案不包括RFC 3986第3.2节中定义的权限组件。本文档中指定的命令的调用发生在系统调用命令的上下文中。例如，从安装了Microsoft Office 2013的运行Microsoft Windows的个人计算机上调用URI“ ms-excel：ofv | u | https：&#x2F;&#x2F;contoso&#x2F;Q4&#x2F;budget.xls”时，预期结果是本地安装Microsoft Excel将启动并传递参数以在https：&#x2F;&#x2F;contoso&#x2F;Q4&#x2F;budget.xls打开文件 在只读模式下。请注意，在本规范中用作定界符的竖线不在RFC 3986第2.2节中标识为保留用作定界符的那些字符中。故意这样做是为了最大化URI命令参数可以支持的字符集，而无需对这些字符进行百分比编码。<br>方案语法包括以下内容：<br>&lt; scheme-name &gt;：这是指应调用的应用程序的类型。例如，ms-word：方案名称由Microsoft Word注册。<br>“：“ 分隔器<br>&lt; 命令名称 &gt;：这描述了应用程序应执行的操作。例如，打开文档进行查看。命令名列表在1.5节中描述。<br>“ |” （竖线）分隔符<br>&lt; command-argument-descriptor &gt;：此元素提供有关command参数所涉及内容的更多信息。<br>“ |” （竖线）分隔符<br>&lt; 命令参数 &gt;：参数根据命令而有所不同。一个常见的参数是文档的URI，通常使用http或https方案。请注意，在&lt; command-argument &gt;段中，RFC 3986保留字符“：”和“ &#x2F;”是参数数据的一部分，而不是定界符，因此未转义包括在内。<br>简图<br>Office URI方案的缩写形式允许更紧凑的请求来启动指定的Office应用程序以打开位于给定URI的资源。此缩写形式表示&lt; 命令名称 &gt;“ ofv”和&lt; 命令参数描述符 &gt;“ u”。此架构中不允许其他命令或命令参数。<br>&lt; 方案名称 &gt;：&lt; 命令参数 &gt;<br>&lt; scheme-name &gt;：应被调用的应用程序的类型。例如ms-word：用于Microsoft Word。<br>&lt; 命令参数 &gt;：应用程序应打开的资源的URI。当前仅支持基于http或https方案的URI。</p>
+<h2 id="1-4方案名称和办公室申请注册"><a href="#1-4方案名称和办公室申请注册" class="headerlink" title="1.4方案名称和办公室申请注册"></a>1.4方案名称和办公室申请注册</h2><p>以下是在Microsoft Office应用程序中实现的方案名称的列表。安装Microsoft Office时，每个方案名称都会在Windows中注册，并由具有相同名称的Office产品处理。请注意，“ ms-spd”是SharePoint Designer的缩写。<br>字词：<br>ms-powerpoint：<br>ms-excel：<br>ms-visio：<br>ms-access：<br>ms-project：<br>ms发布者：<br>ms-spd：<br>ms-infopath：</p>
+<h2 id="1-5命令和所需的命令参数"><a href="#1-5命令和所需的命令参数" class="headerlink" title="1.5命令和所需的命令参数"></a>1.5命令和所需的命令参数</h2><p>查看文件<br>以下命令将导致应用程序以只读或查看模式打开URI引用的文档。<br>命令名称：ofv<br>命令参数描述符：u<br>命令参数：基于http或https方案的文档URI<br>示例： ms-excel：ofv | u | https：&#x2F;&#x2F;contoso&#x2F;Q4&#x2F;budget.xls<br>编辑文件<br>以下命令将使应用程序在编辑模式下打开URI引用的文档。<br>命令名称：ofe<br>命令参数描述符：u<br>命令参数：基于http或https方案的文档URI<br>示例： ms-powerpoint：ofe | u | https：&#x2F;&#x2F;<a target="_blank" rel="noopener" href="http://www.fourthcoffee.com/AllHandsDeck.ppt">www.fourthcoffee.com/AllHandsDeck.ppt</a><br>模板中的新文档<br>以下命令将使应用程序根据存储在指定URI上的模板创建并打开一个新文档。在此过程中，不会修改模板文件。可以提供一个附加的命令参数，以指定首次保存文件时作为保存位置提供的默认路径。用户可以选择其他位置。<br>命令名称：nft<br>命令参数描述符1：u<br>命令参数1：基于http或https方案的模板URI<br>可选的命令参数描述符2：s<br>可选命令参数2：用于指定默认保存文件夹的URI<br>例如： ms-word：nft | u | https：&#x2F;&#x2F;cohowinery&#x2F;templates&#x2F;elegance.pot | s | https：&#x2F;&#x2F; cohowinery &#x2F; presentations<br>注意，如果提供了可选的默认保存位置，则它必须指向与模板相同的主机名。<br>此外，SharePoint Designer和InfoPath应用程序（分别实现ms-spd：方案和ms-infopath：方案）不支持“来自模板的新文档”功能。</p>
+<h2 id="1-6向后兼容性"><a href="#1-6向后兼容性" class="headerlink" title="1.6向后兼容性"></a>1.6向后兼容性</h2><p>解析URI以提取给定命令的适当命令参数时，Office URI处理程序将仅使用具有预期命令参数描述符的命令参数。如果还有其他对的参数和参数描述符具有意外的参数描述符，则会将其从URI中删除。此机制允许该方案的未来版本添加其他命令参数，而不会破坏与该方案的旧版实现的向后兼容性。</p>
+<h2 id="1-7命令参数的实施限制"><a href="#1-7命令参数的实施限制" class="headerlink" title="1.7命令参数的实施限制"></a>1.7命令参数的实施限制</h2><p>在Office 2013的当前实现中，命令自变量具有以下限制。<br>URI命令参数的长度限制<br>对于URI命令参数，除Excel外，所有应用程序的最大路径长度均为256个字符，Excel的最大限制为216个字符。逐个应用程序可能支持大于这些长度的路径，建议在部署任何依赖于此的解决方案之前进行测试在此。<br>URI命令参数中允许的字符<br>允许的URI必须符合RFC 3987-国际化资源标识符（IRI）中提出的标准。RFC 3986中标识为保留的字符不应进行百分比编码。。文件名不得包含以下任何字符：\ &#x2F;：？&lt;&gt; | “ 要么 *。  <br>附录A-MS-WORD方案的URI方案注册模板</p>
+<ul>
+<li>A-3。URI方案语法<br>Word Scheme &#x3D;“ ms-word：” open-for-edit-cmd | 打开查看cmd | 模板新命令<br>open-for-edit-cmd &#x3D;“ ofe | u |” uri文件<br>open-for-view-cmd &#x3D;“ ofv | u |” uri文件<br>new-from-template-cmd &#x3D;“ nft | u |” template-uri [“ | s |” 保存位置]<br>document-uri &#x3D;要打开的文档的URI位置<br>template-uri &#x3D;新文件所基于的模板文件的URI位置<br>save-location &#x3D;应在其中创建新文档的文件夹的URI位置</li>
+<li>A-4。URI方案语义<br>ms字方案定义了用于打开或创建字处理文档的URI语法。该方案定义了三个命令，这些命令用作有关参考文档应执行的操作的说明。这些命令是：1）open-for-edit-cmd（ofe），它指示文字处理应用程序以指定的URI打开文档进行编辑；2）open-for-view-cmd（ofv），它指示文字处理应用程序以只读模式以指定的URI打开文档；3）new-from-template-cmd（nft），它指示文字处理应用程序根据位于指定template-uri URI上的文档模板创建新文档，并将新文档保存在可选的保存位置URI，或者在没有该可选URI的情况下位于默认文档库位置。</li>
+<li>A-5。使用ms字URI方案的应用程序&#x2F;协议<br>Microsoft Office 2013使用ms-word URI方案调用带有Service Pack 2的Microsoft Word 2013或Microsoft Word2010。MicrosoftSharePoint 2013使用ms-word URI作为指向存储在SharePoint文档库中的文字处理文档的链接。</li>
+<li>A-6。互操作性注意事项<br>请注意，在本规范中用作定界符的竖线不在RFC 3986第2.2节中标识为保留用作定界符的那些字符中。这样做是为了最大程度地实现URI命令参数可以支持的字符集，而无需需要对这些字符进行百分比编码。<br>在&lt; command-argument &gt;段中，RFC 3986保留字符“：”和“ &#x2F;”是参数数据的一部分，而不是定界符，因此不加转义。</li>
+<li>A-7。安全注意事项<br>在已注册了可识别ms-word URI并对其执行操作的处理程序的系统上，单击指向ms-word URI的链接将导致启动已注册的文字处理应用程序，并向该文字处理应用程序发出指令以尝试打开文档在指定的URI。注册以处理ms-word URI的字处理应用程序应实施保护措施，以防止从可能包含恶意代码的不受信任的远程系统打开文档。</li>
+<li>A-8。参考文献<br>RFC 3987-国际资源标识符（IRI）  <br>附录B-MS-POWERPOINT方案的URI方案注册模板</li>
+<li>B-3。URI方案语法<br>PowerPoint方案&#x3D;“ ms-powerpoint：”打开编辑cmd | 打开查看cmd | 模板新命令<br>open-for-edit-cmd &#x3D;“ ofe | u |” uri文件<br>open-for-view-cmd &#x3D;“ ofv | u |” uri文件<br>new-from-template-cmd &#x3D;“ nft | u |” template-uri [“ | s |” 保存位置]<br>document-uri &#x3D;要打开的文档的URI位置<br>template-uri &#x3D;新文件所基于的模板文件的URI位置<br>save-location * &#x3D;应在其中创建新文档的文件夹的URI位置</li>
+</ul>
+<ul>
+<li>save-location是可选参数</li>
+</ul>
+<ul>
+<li>B-4。URI方案语义<br>ms-powerpoint方案定义了用于打开或创建演示文稿文档的URI语法。该方案定义了三个命令，这些命令用作有关参考文档应执行的操作的说明。这些命令是：1）open-for-edit-cmd（ofe），它指示演示应用程序以指定的URI打开文档进行编辑；2）open-for-view-cmd（ofv），它指示演示应用程序以只读模式以指定的URI打开文档；3）new-from-template-cmd（nft），它指示演示文稿应用程序基于位于指定template-uri URI处的文档模板创建新文档，并将新文档保存在可选文档中指定的位置保存位置URI，或者在没有该可选URI的情况下，位于默认文档库位置。</li>
+<li>B-5。使用ms-powerpoint URI方案的应用程序&#x2F;协议<br>Microsoft Office 2013使用ms-powerpoint URI方案调用带Service Pack 2的Microsoft PowerPoint 2013或Microsoft PowerPoint2010。MicrosoftSharePoint 2013使用ms-powerpoint URI作为指向存储在SharePoint文档库中的演示文稿文档的链接。</li>
+<li>B-6。互操作性注意事项<br>请注意，在本规范中用作定界符的竖线不在RFC 3986第2.2节中标识为保留用作定界符的那些字符中。故意这样做是为了最大化URI命令参数可以支持的字符集，而无需对这些字符进行百分比编码。<br>在&lt; command-argument &gt;段中，RFC 3986保留字符“：”和“ &#x2F;”是参数数据的一部分，而不是定界符，因此不加转义。</li>
+<li>B-7。安全注意事项<br>在已注册用于识别ms-powerpoint URI并对其进行操作的处理程序的系统上，单击指向ms-powerpoint URI的链接将导致注册的演示文稿应用程序启动，并带有指示该应用程序尝试在指定的位置打开文档的说明。 URI。注册以处理ms-powerpoint URI的应用程序应实施保护措施，以防止从可能包含恶意代码的不受信任的远程系统打开文档。</li>
+<li>B-8。参考文献<br>RFC 3987-国际资源标识符（IRI）  <br>附录C-MS-EXCEL方案的URI方案注册模板</li>
+<li>C-3。URI方案语法<br>Excel Scheme &#x3D;“ ms-excel：”打开编辑cmd | 打开查看cmd | 模板新命令<br>open-for-edit-cmd &#x3D;“ ofe | u |” uri文件<br>open-for-view-cmd &#x3D;“ ofv | u |” uri文件<br>new-from-template-cmd &#x3D;“ nft | u |” template-uri [“ | s |” 保存位置]<br>document-uri &#x3D;要打开的文档的URI位置<br>template-uri &#x3D;新文件所基于的模板文件的URI位置<br>save-location * &#x3D;应在其中创建新文档的文件夹的URI位置</li>
+</ul>
+<ul>
+<li>save-location是可选参数</li>
+</ul>
+<ul>
+<li>C-4。URI方案语义<br>ms-excel方案定义了用于打开或创建电子表格文档的URI语法。该方案定义了三个命令，这些命令用作有关参考文档应执行的操作的说明。这些命令是：1）open-for-edit-cmd（ofe），它指示电子表格应用程序以指定的URI打开文档进行编辑；2）open-for-view-cmd（ofv），它指示电子表格应用程序以只读模式以指定的URI打开文档；3）new-from-template-cmd（nft），它指示电子表格应用程序根据位于指定template-uri URI处的文档模板创建新文档，并将新文档保存在可选文档中指定的位置保存位置URI，或者在没有该可选URI的情况下，位于默认文档库位置。</li>
+<li>C-5。使用ms-excel URI方案的应用程序&#x2F;协议<br>Microsoft Office 2013使用ms-excel URI方案来调用带有Service Pack 2的Microsoft Excel 2013或Microsoft Excel2010。MicrosoftSharePoint 2013使用ms-excel URI作为指向存储在SharePoint文档库中的电子表格文档的链接。</li>
+<li>C-6。互操作性注意事项<br>请注意，在本规范中用作定界符的竖线不在RFC 3986第2.2节中标识为保留用作定界符的那些字符中。故意这样做是为了最大化URI命令参数可以支持的字符集，而无需对这些字符进行百分比编码。<br>在&lt; command-argument &gt;段中，RFC 3986保留字符“：”和“ &#x2F;”是参数数据的一部分，而不是定界符，因此不加转义。</li>
+<li>C-7。安全注意事项<br>在已注册了可识别ms-excel URI并对其执行操作的处理程序的系统上，单击指向ms-excel URI的链接将导致启动已注册的电子表格应用程序，并带有指示该应用程序尝试在指定的位置打开文档的说明。 URI。注册以处理ms-excel URI的应用程序应实施保护措施，以防止从可能包含恶意代码的不受信任的远程系统打开文档。</li>
+<li>C-8。参考文献<br>RFC 3987-国际资源标识符（IRI）  <br>附录D-MS-VISIO方案的URI方案注册模板</li>
+<li>D-3。URI方案语法<br>Visio方案&#x3D;“ ms-visio：”打开编辑cmd | 打开查看cmd | 模板新命令<br>open-for-edit-cmd &#x3D;“ ofe | u |” uri文件<br>open-for-view-cmd &#x3D;“ ofv | u |” uri文件<br>new-from-template-cmd &#x3D;“ nft | u |” template-uri [“ | s |” 保存位置]<br>document-uri &#x3D;要打开的文档的URI位置<br>template-uri &#x3D;新文件所基于的模板文件的URI位置<br>save-location * &#x3D;应在其中创建新文档的文件夹的URI位置</li>
+</ul>
+<ul>
+<li>save-location是可选参数</li>
+</ul>
+<ul>
+<li>D-4。URI方案语义<br>ms-visio方案定义了用于打开或创建Microsoft Visio文档的URI语法。该方案定义了三个命令，这些命令用作有关参考文档应执行的操作的说明。这些命令是：1）open-for-edit-cmd（ofe），它指示Visio以指定的URI打开文档进行编辑；2）open-for-view-cmd（ofv），指示Visio以只读模式在指定的URI中打开文档；和3）new-from-template-cmd（nft），它指示Visio根据位于指定template-uri URI上的文档模板创建一个新文档，并将新文档保存在可选的save-中指定的位置。位置URI，或者在没有该可选URI的情况下，位于默认文档库位置。</li>
+<li>D-5。使用ms-visio URI方案的应用程序&#x2F;协议<br>Microsoft Office 2013使用ms-visio URI方案来调用带有Service Pack 2的Microsoft Visio 2013或Microsoft Visio2010。MicrosoftSharePoint 2013使用ms-visio URI作为指向存储在SharePoint文档库中的Visio文档的链接。</li>
+<li>D-6。互操作性注意事项<br>请注意，在本规范中用作定界符的竖线不在RFC 3986第2.2节中标识为保留用作定界符的那些字符中。故意这样做是为了最大化URI命令参数可以支持的字符集，而无需对这些字符进行百分比编码。<br>在&lt; command-argument &gt;段中，RFC 3986保留字符“：”和“ &#x2F;”是参数数据的一部分，而不是定界符，因此不加转义。</li>
+<li>D-7。安全注意事项<br>在已注册了可识别ms-visio URI并对其执行操作的处理程序的系统上，单击指向ms-visio URI的链接将导致启动已注册的应用程序，并带有指示该应用程序尝试在指定URI上打开文档的说明。 。注册以处理ms-visio URI的应用程序应实施保护措施，以防止从可能包含恶意代码的不受信任的远程系统打开文档。</li>
+<li>D-8。参考文献<br>RFC 3987-国际资源标识符（IRI）<br>附录E-MS访问方案的URI方案注册模板</li>
+<li>E-3。URI方案语法<br>访问方案&#x3D;“ ms-access：” open-for-edit-cmd | 打开查看cmd | 模板新命令<br>open-for-edit-cmd &#x3D;“ ofe | u |” uri文件<br>open-for-view-cmd &#x3D;“ ofv | u |” uri文件<br>new-from-template-cmd &#x3D;“ nft | u |” template-uri [“ | s |” 保存位置]<br>document-uri &#x3D;要打开的文档的URI位置<br>template-uri &#x3D;新文件所基于的模板文件的URI位置<br>save-location * &#x3D;应在其中创建新文档的文件夹的URI位置</li>
+</ul>
+<ul>
+<li>save-location是可选参数</li>
+</ul>
+<ul>
+<li>E-4。URI方案语义<br>ms-access方案定义了用于打开或创建数据库的URI语法。该方案定义了三个命令，这些命令用作有关对引用的数据库文件应执行的操作的说明。这些命令是：1）open-for-edit-cmd（ofe），它指示数据库应用程序以指定的URI打开数据库以进行编辑；2）open-for-view-cmd（ofv），它指示数据库应用程序以只读模式以指定的URI打开数据库；3）new-from-template-cmd（nft），它指示数据库应用程序基于位于指定template-uri URI处的模板创建一个新数据库，并将新数据库保存在可选保存中指定的位置-location URI，或者在没有该可选URI的情况下，位于默认文档库位置。</li>
+<li>E-5。使用ms-access URI方案的应用程序&#x2F;协议<br>Microsoft Office 2013使用ms-access URI方案从网页调用Microsoft Access 2013或Microsoft Access 2010 Service Pack 2。Microsoft SharePoint 2013使用ms-access URI作为指向存储在SharePoint文档库中的Access数据库的链接。</li>
+<li>E-6。互操作性注意事项<br>请注意，在本规范中用作定界符的竖线不在RFC 3986第2.2节中标识为保留用作定界符的那些字符中。故意这样做是为了最大化URI命令参数可以支持的字符集，而无需对这些字符进行百分比编码。在<command-argument>段中，RFC 3986保留字符“：”和“ &#x2F;”是参数数据的一部分，而不是定界符，因此不加转义。</li>
+<li>E-7。安全注意事项<br>在已注册了可识别ms-access URI并对其进行操作的处理程序的系统上，单击指向ms-access URI的链接将导致启动已注册的应用程序，并向该应用程序发出指令，以尝试以指定的URI打开数据库。 。注册以处理ms-access URI的应用程序应实施保护措施，以防止从可能包含恶意代码的不受信任的远程系统打开数据库。</li>
+<li>E-8。参考文献<br>RFC 3987-国际资源标识符（IRI）  <br>附录F-MS项目计划的URI计划注册模板</li>
+<li>F-3。URI方案语法<br>项目计划&#x3D;“ ms-project：” open-for-edit-cmd | 打开查看cmd | 模板新命令<br>open-for-edit-cmd &#x3D;“ ofe | u |” uri文件<br>open-for-view-cmd &#x3D;“ ofv | u |” uri文件<br>new-from-template-cmd &#x3D;“ nft | u |” template-uri [“ | s |” 保存位置]<br>document-uri &#x3D;要打开的文档的URI位置<br>template-uri &#x3D;新文件所基于的模板文件的URI位置<br>save-location * &#x3D;应在其中创建新文档的文件夹的URI位置</li>
+</ul>
+<ul>
+<li>save-location是可选参数</li>
+</ul>
+<ul>
+<li>F-4。URI方案语义<br>ms-project方案定义了用于打开或创建Microsoft Project文档的URI语法。该方案定义了三个命令，这些命令用作有关参考文档应执行的操作的说明。这些命令是：1）open-for-edit-cmd（ofe），它指示Project以指定的URI打开文档进行编辑；2）open-for-view-cmd（ofv），指示Project以只读模式在指定URI处打开文档；和3）new-from-template-cmd（nft），它指示Project根据位于指定template-uri URI上的文档模板创建新文档，并将新文档保存在可选的save-中指定的位置。位置URI，或者在没有该可选URI的情况下，位于默认文档库位置。<br>F-5。使用ms-project URI方案的应用程序&#x2F;协议<br>Microsoft Office 2013使用ms-project URI方案从网页调用Microsoft Project 2013。Microsoft SharePoint 2013使用ms-project URI作为指向存储在SharePoint文档库中的Project文档的链接。</li>
+<li>F-6。互操作性注意事项<br>请注意，在本规范中用作定界符的竖线不在RFC 3986第2.2节中标识为保留用作定界符的那些字符中。故意这样做是为了最大化URI命令参数可以支持的字符集，而无需对这些字符进行百分比编码。<br>在&lt; command-argument &gt;段中，RFC 3986保留字符“：”和“ &#x2F;”是参数数据的一部分，而不是定界符，因此不加转义。</li>
+<li>F-7。安全注意事项<br>在已注册了可识别ms-project URI并对其进行操作的处理程序的系统上，单击指向ms-project URI的链接将导致已注册的应用程序启动，并带有指示该应用程序尝试以指定URI打开文档的说明。 。注册以处理ms-project URI的应用程序应实施保护措施，以防止从可能包含恶意代码的不受信任的远程系统打开文档。</li>
+<li>F-8。参考文献<br>RFC 3987-国际资源标识符（IRI）  <br>附录G-MS-PUSCHISHER方案的URI方案注册模板</li>
+<li>G-3。URI方案<br>语法Publisher Scheme &#x3D;“ ms-publisher：” open-for-edit-cmd | 打开查看cmd | 模板新命令<br>open-for-edit-cmd &#x3D;“ ofe | u |” uri文件<br>open-for-view-cmd &#x3D;“ ofv | u |” uri文件<br>new-from-template-cmd &#x3D;“ nft | u |” template-uri [“ | s |” 保存位置]<br>document-uri &#x3D;要打开的文档的URI位置<br>template-uri &#x3D;新文件所基于的模板文件的URI位置<br>save-location * &#x3D;应在其中创建新文档的文件夹的URI位置</li>
+</ul>
+<ul>
+<li>save-location是可选参数</li>
+</ul>
+<ul>
+<li>G-4。URI方案语义<br>ms-publisher方案定义了用于打开或创建Microsoft Publisher文档的URI语法。该方案定义了三个命令，这些命令用作有关参考文档应执行的操作的说明。这些命令是：1）open-for-edit-cmd（ofe），它指示Publisher在指定的URI上打开文档进行编辑；2）open-for-view-cmd（ofv），指示Publisher以只读模式在指定URI处打开文档；和3）new-from-template-cmd（nft），指示发布者根据位于指定template-uri URI上的文档模板创建新文档，并将新文档保存在可选的save-中指定的位置，位置URI，或者在没有该可选URI的情况下，位于默认文档库位置。</li>
+<li>G-5。使用ms-publisher URI方案的应用程序&#x2F;协议<br>Microsoft Office 2013使用ms-publisher URI方案从网页调用Microsoft Publisher 2013或带有Service Pack 2的Microsoft Publisher 2010。Microsoft SharePoint 2013使用ms-publisher URI作为指向存储在SharePoint文档库中的Publisher文档的链接。</li>
+<li>G-6。互操作性注意事项<br>请注意，在本规范中用作定界符的竖线不在RFC 3986第2.2节中标识为保留用作定界符的那些字符中。故意这样做是为了最大化URI命令参数可以支持的字符集，而无需对这些字符进行百分比编码。在<command-argument>段中，RFC 3986保留字符“：”和“ &#x2F;”是参数数据的一部分，而不是定界符，因此不加转义。<br>7国集团。安全注意事项<br>在已注册处理程序以识别ms-publisher URI并对其执行操作的系统上，单击指向ms-publisher URI的链接将导致已注册的应用程序启动，并带有指示该应用程序尝试以指定URI打开文档的说明。 。注册以处理ms-publisher URI的应用程序应实施保护措施，以防止从可能包含恶意代码的不受信任的远程系统打开文档。<br>9国集团 参考文献<br>RFC 3987-国际资源标识符（IRI）  <br>附录H-MS-SPD方案的URI方案注册模板</li>
+<li>H-3。URI方案语法<br>SharePoint Designer方案&#x3D;“ ms-spd：” open-for-edit-cmd<br>open-for-edit-cmd &#x3D;“ ofe | u |” uri文件<br>document-uri &#x3D;要打开的文档的URI位置</li>
+<li>H-4。URI方案语义<br>ms-spd方案定义了用于打开Microsoft SharePoint Designer文档的URI语法。该方案定义了两个命令，这些命令用作有关参考文档应执行的操作的说明。这些命令是：1）open-for-edit-cmd（ofe），它指示SharePoint Designer在指定的URI上打开文档进行编辑；2）open-for-view-cmd（ofv），它指示SharePoint Designer以只读模式在指定的URI上打开文档。</li>
+<li>H-5。使用ms-spd URI方案的应用程序&#x2F;协议<br>Microsoft Office 2013使用ms-spd URI方案从网页调用Microsoft SharePoint Designer 2013。Microsoft SharePoint 2013使用ms-spd URI作为指向存储在SharePoint文档库中的SharePoint Designer文档的链接。</li>
+<li>H-6。互操作性注意事项<br>请注意，在本规范中用作定界符的竖线不在RFC 3986第2.2节中标识为保留用作定界符的那些字符中。故意这样做是为了最大化URI命令参数可以支持的字符集，而无需对这些字符进行百分比编码。<br>在&lt; command-argument &gt;段中，RFC 3986保留字符“：”和“ &#x2F;”是参数数据的一部分，而不是定界符，因此不加转义。</li>
+<li>H-7。安全注意事项<br>在已注册了可识别ms-spd URI并对其执行操作的处理程序的系统上，单击指向ms-spd URI的链接将导致已注册的应用程序启动，并带有指示该应用程序尝试以指定URI打开文档的说明。 。注册以处理ms-spd URI的应用程序应实施保护措施，以防止从可能包含恶意代码的不受信任的远程系统打开文档。</li>
+<li>H-8。参考文献<br>RFC 3987-国际资源标识符（IRI）  <br>附录I-MS-INFOPATH方案的URI方案注册模板</li>
+<li>I-3。URI方案语法<br>信息路径方案&#x3D;“ ms-信息路径：” open-for-edit-cmd | 打开查看cmd<br>open-for-edit-cmd &#x3D;“ ofe | u |” uri文件<br>open-for-view-cmd &#x3D;“ ofv | u |” uri文件<br>document-uri &#x3D;要打开的文档的URI位置</li>
+<li>I-4。URI方案语义<br>ms-infopath方案定义了用于打开或创建Microsoft Infopath文档的URI语法。该方案定义了两个命令，这些命令用作有关参考文档应执行的操作的说明。这些命令是：1）open-for-edit-cmd（ofe），它指示Visio以指定的URI打开文档进行编辑；2）open-for-view-cmd（ofv），它指示Visio以只读模式在指定的URI上打开文档。</li>
+<li>I-5。使用ms-infopath URI方案的应用程序&#x2F;协议<br>Microsoft Office 2013使用ms-infopath URI方案从网页调用Microsoft Infopath 2013。Microsoft SharePoint 2013使用ms-infopath URI作为指向存储在SharePoint文档库中的Infopath文档的链接。</li>
+<li>I-6。互操作性注意事项<br>请注意，在本规范中用作定界符的竖线不在RFC 3986第2.2节中标识为保留用作定界符的那些字符中。故意这样做是为了最大化URI命令参数可以支持的字符集，而无需对这些字符进行百分比编码。<br>在&lt; command-argument &gt;段中，RFC 3986保留字符“：”和“ &#x2F;”是参数数据的一部分，而不是定界符，因此不加转义。</li>
+<li>I-7。安全注意事项<br>在已注册了可识别ms-infopath URI并对其执行操作的处理程序的系统上，单击指向ms-infopath URI的链接将导致启动已注册的应用程序，并带有指示该应用程序尝试以指定URI打开文档的说明。 。注册以处理ms-infopath URI的应用程序应实施保护措施，以防止从可能包含恶意代码的不受信任的远程系统打开文档。</li>
+</ul>
+
+      </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%E6%91%98%E8%A6%81"><span class="toc-text">1.1摘要</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%E5%BC%95%E8%A8%80"><span class="toc-text">1.2引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-URI%E6%A8%A1%E5%BC%8F"><span class="toc-text">1.3 URI模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4%E6%96%B9%E6%A1%88%E5%90%8D%E7%A7%B0%E5%92%8C%E5%8A%9E%E5%85%AC%E5%AE%A4%E7%94%B3%E8%AF%B7%E6%B3%A8%E5%86%8C"><span class="toc-text">1.4方案名称和办公室申请注册</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5%E5%91%BD%E4%BB%A4%E5%92%8C%E6%89%80%E9%9C%80%E7%9A%84%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0"><span class="toc-text">1.5命令和所需的命令参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6%E5%90%91%E5%90%8E%E5%85%BC%E5%AE%B9%E6%80%A7"><span class="toc-text">1.6向后兼容性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0%E7%9A%84%E5%AE%9E%E6%96%BD%E9%99%90%E5%88%B6"><span class="toc-text">1.7命令参数的实施限制</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/blog/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/saver-live">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+        <li>
+          
+              <a title="twitter" target="_blank" rel="noopener" href="https://x.com/saver_live">
+                <i class="iconfont icon-twitter"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/saver-live">Copyright © 2025 saver</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/blog/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/blog/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/blog/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + microsoft%20office%20url%E6%96%B9%E6%A1%88 + '&url=' + https%3A%2F%2Fsaver-live.github.io%2Fblog%2F2025%2F09%2F12%2FMicrosoft-office-url%25E6%2596%25B9%25E6%25A1%2588%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://saver-live.github.io/blog/2025/09/12/Microsoft-office-url%E6%96%B9%E6%A1%88/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/blog/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>
