@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="saver" />
+ <meta name="referrer" content="no-referrer">
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  <meta name="description" content="记录生活，分析技术" />
+  
+  
+  
+  <title>
+    
+      使用智能标记智能地将嵌套对象导入 Excel 
+      
+      
+      |
+    
+     saver的博客
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+    <link rel="icon" href="https://gitee.com/saver-live/cdn/raw/master/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/blog/css/main.css">
+
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/blog/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/blog">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img no-lazy src="https://gitee.com/saver-live/cdn/raw/master/images/avatar.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/blog">SAVER</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/blog">
+          <a href="/blog">首页</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/archives/">
+          <a href="/blog/archives/">档案</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/categories/">
+          <a href="/blog/categories/">类别</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/tags/">
+          <a href="/blog/tags/">标签</a>
+        </li>
+      
+        <li class="nav-item" data-path="/blog/about/">
+          <a href="/blog/about/">关于</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/blog/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.0.0/tex-chtml.min.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  
+  
+<script src="/blog/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">使用智能标记智能地将嵌套对象导入 Excel</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-09-18 10:32:55
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="分类"></i>
+                
+                <span class="span--category">
+                  <a href="/blog/categories/%E6%8A%A5%E8%A1%A8/" title="报表">
+                    <b>#</b> 报表
+                  </a>
+                </span>
+                
+              </span>
+          
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/blog/tags/Aspose-cell/" title="Aspose cell">
+                    #Aspose cell
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h3 id="为什么要将嵌套对象用于智能标记"><a href="#为什么要将嵌套对象用于智能标记" class="headerlink" title="为什么要将嵌套对象用于智能标记"></a>为什么要将嵌套对象用于智能标记</h3><p>智能标记（在 FoxPro、报告引擎或现代模板系统等工具中）是将数据动态注入模板的占位符。使用嵌套对象（例如，«customer.address.city»）可以增强灵活性、组织性和表现力。</p>
+<ol>
+<li>分层数据表示：现实世界的数据本质上是嵌套的（例如，订单包含一个客户，该客户有一个地址）。嵌套对象反映了这种结构，避免了像customer_city这样的扁平&#x2F;人工字段。</li>
+<li>避免命名冲突：平面结构存在冲突的风险（例如，product_name 与 supplier_name）。自然嵌套作用域名称： “product.name”与“supplier.name”。</li>
+<li>模块化和可重用性：跨上下文重用子对象，地址对象可以嵌入到客户、供应商或员工标记中。对地址的更改会普遍传播。</li>
+<li>简化的数据绑定：将整个嵌套对象绑定到模板，«order.customer» 自动扩展到所有客户字段。减少子字段的手动映射。</li>
+<li>动态数据遍历：按需遍历关系，«invoice.line_items[0].price» 访问数组元素或子对象。无需预处理即可启用复杂查询。</li>
+<li>更清晰的模板逻辑：标记自记录关系，“user.profile.email”比“user_email”更直观。减少大型模板中的歧义。</li>
+<li>框架&#x2F;工具支持：现代引擎（例如 Handlebars、React、FoxPro）原生解析嵌套路径。与嵌套数据是标准的 JSON&#x2F;API 保持一致。</li>
+</ol>
+<h3 id="如何使用智能标记导入匿名类型或自定义对象"><a href="#如何使用智能标记导入匿名类型或自定义对象" class="headerlink" title="如何使用智能标记导入匿名类型或自定义对象"></a>如何使用智能标记导入匿名类型或自定义对象</h3><p>Aspose.Cells 还支持智能标记中的匿名类型或自定义对象。下面的示例显示了其工作原理。要使用智能标记从动态对象导入数据，请访问以下文章：</p>
+<p>从动态对象导入作为数据源</p>
+<h3 id="如何使用智能标记导入嵌套对象"><a href="#如何使用智能标记导入嵌套对象" class="headerlink" title="如何使用智能标记导入嵌套对象"></a>如何使用智能标记导入嵌套对象</h3><p>Aspose.Cells 支持智能标记中的嵌套对象，嵌套对象应该很简单。我们使用一个简单的模板文件。请参阅包含一些嵌套智能标记的设计器电子表格。</p>
+<p>显示嵌套智能标记的SM_NestedObjects.xlsx文件的第一个工作表。<br><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" data-original="https://i0.hdslb.com/bfs/openplatform/06f48a137402b78c2b15c2c45b7b753a2498d0c2.png" alt="图片"></p>
+<p>下面的示例显示了其工作原理。</p>
+<h3 id="如何使用智能标记将通用列表导入为嵌套对象"><a href="#如何使用智能标记将通用列表导入为嵌套对象" class="headerlink" title="如何使用智能标记将通用列表导入为嵌套对象"></a>如何使用智能标记将通用列表导入为嵌套对象</h3><p>Aspose.Cells 现在还支持使用通用列表作为嵌套对象。请检查使用以下代码生成的输出 excel 文件的屏幕截图。正如您在屏幕截图中看到的，Teacher 对象包含多个嵌套的 Student 对象。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" data-original="https://i0.hdslb.com/bfs/openplatform/277f7e8179f0d49ce389bb57192af0236c3b727b.png" alt="图片"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">// For complete examples and data files, please go to https://github.com/aspose-cells/Aspose.Cells-for-.NET</span><br><span class="line">  // The path to the documents directory.</span><br><span class="line">            string dataDir = RunExamples.GetDataDir(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</span><br><span class="line">            Workbook workbook = new Workbook();</span><br><span class="line"></span><br><span class="line">            // Create a designer workbook</span><br><span class="line"></span><br><span class="line">            // Workbook workbook = new Workbook();</span><br><span class="line">            Worksheet worksheet = workbook.Worksheets[0];</span><br><span class="line"></span><br><span class="line">            worksheet.Cells[&quot;A1&quot;].PutValue(&quot;Teacher Name&quot;);</span><br><span class="line">            worksheet.Cells[&quot;A2&quot;].PutValue(&quot;&amp;=Teacher.Name&quot;);</span><br><span class="line"></span><br><span class="line">            worksheet.Cells[&quot;B1&quot;].PutValue(&quot;Teacher Age&quot;);</span><br><span class="line">            worksheet.Cells[&quot;B2&quot;].PutValue(&quot;&amp;=Teacher.Age&quot;);</span><br><span class="line"></span><br><span class="line">            worksheet.Cells[&quot;C1&quot;].PutValue(&quot;Student Name&quot;);</span><br><span class="line">            worksheet.Cells[&quot;C2&quot;].PutValue(&quot;&amp;=Teacher.Students.Name&quot;);</span><br><span class="line"></span><br><span class="line">            worksheet.Cells[&quot;D1&quot;].PutValue(&quot;Student Age&quot;);</span><br><span class="line">            worksheet.Cells[&quot;D2&quot;].PutValue(&quot;&amp;=Teacher.Students.Age&quot;);</span><br><span class="line"></span><br><span class="line">            // Apply Style to A1:D1</span><br><span class="line">            Range range = worksheet.Cells.CreateRange(&quot;A1:D1&quot;);</span><br><span class="line">            Style style = workbook.CreateStyle();</span><br><span class="line">            style.Font.IsBold = true;</span><br><span class="line">            style.ForegroundColor = Color.Yellow;</span><br><span class="line">            style.Pattern = BackgroundType.Solid;</span><br><span class="line">            StyleFlag flag = new StyleFlag();</span><br><span class="line">            flag.All = true;</span><br><span class="line">            range.ApplyStyle(style, flag);</span><br><span class="line"></span><br><span class="line">            // Initialize WorkbookDesigner object</span><br><span class="line">            WorkbookDesigner designer = new WorkbookDesigner();</span><br><span class="line"></span><br><span class="line">            // Load the template file</span><br><span class="line">            designer.Workbook = workbook;</span><br><span class="line"></span><br><span class="line">            System.Collections.Generic.List&lt;Teacher&gt; list = new System.Collections.Generic.List&lt;Teacher&gt;();</span><br><span class="line"></span><br><span class="line">            // Create an object for the Teacher class</span><br><span class="line">            Teacher h1 = new Teacher(&quot;Mark John&quot;, 30);</span><br><span class="line"></span><br><span class="line">            // Create the relevant student objects for the Teacher object</span><br><span class="line">            h1.Students = new List&lt;Person&gt;();</span><br><span class="line">            h1.Students.Add(new Person(&quot;Chen Zhao&quot;, 14));</span><br><span class="line">            h1.Students.Add(new Person(&quot;Jamima Winfrey&quot;, 18));</span><br><span class="line">            h1.Students.Add(new Person(&quot;Reham Smith&quot;, 15));</span><br><span class="line"></span><br><span class="line">            // Create another object for the Teacher class</span><br><span class="line">            Teacher h2 = new Teacher(&quot;Masood Shankar&quot;, 40);</span><br><span class="line"></span><br><span class="line">            // Create the relevant student objects for the Teacher object</span><br><span class="line">            h2.Students = new List&lt;Person&gt;();</span><br><span class="line">            h2.Students.Add(new Person(&quot;Karishma Jathool&quot;, 16));</span><br><span class="line">            h2.Students.Add(new Person(&quot;Angela Rose&quot;, 13));</span><br><span class="line">            h2.Students.Add(new Person(&quot;Hina Khanna&quot;, 15));</span><br><span class="line"></span><br><span class="line">            // Add the objects to the list</span><br><span class="line">            list.Add(h1);</span><br><span class="line">            list.Add(h2);</span><br><span class="line"></span><br><span class="line">            // Specify the DataSource</span><br><span class="line">            designer.SetDataSource(&quot;Teacher&quot;, list);</span><br><span class="line"></span><br><span class="line">            // Process the markers</span><br><span class="line">            designer.Process();</span><br><span class="line"></span><br><span class="line">            // Autofit columns</span><br><span class="line">            worksheet.AutoFitColumns();</span><br><span class="line"></span><br><span class="line">            // Save the Excel file.</span><br><span class="line">            designer.Workbook.Save(dataDir + &quot;output.xlsx&quot;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="如何使用智能标记导入嵌套对象，而不是逐行导入嵌套对象"><a href="#如何使用智能标记导入嵌套对象，而不是逐行导入嵌套对象" class="headerlink" title="如何使用智能标记导入嵌套对象，而不是逐行导入嵌套对象"></a>如何使用智能标记导入嵌套对象，而不是逐行导入嵌套对象</h3><p>目前默认的处理方法是逐行处理 smartmaker。但有时同一数据表的智能标记需要一起处理，无论 如果它们是否在同一行中，则必须在调用处理之前指定命名范围“_CellsSmartMarkers”并将 WorkbookDesigner.LineByLine 指定为 false。</p>
+<p><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" data-original="https://i0.hdslb.com/bfs/openplatform/fcb231dbc2b2e7212448f45da7118815d702eddc.png" alt="图片"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line">string dataDir = &quot;./&quot;;</span><br><span class="line">Workbook workbook = new Workbook();</span><br><span class="line">Style style = workbook.CreateStyle();</span><br><span class="line">style.Pattern = BackgroundType.Solid;</span><br><span class="line">style.ForegroundColor = Color.Black;</span><br><span class="line">style.Font.Color = Color.White;</span><br><span class="line">// Create a designer workbook</span><br><span class="line"></span><br><span class="line">// Workbook workbook = new Workbook();</span><br><span class="line">Worksheet worksheet = workbook.Worksheets[0];</span><br><span class="line"></span><br><span class="line">worksheet.Cells[&quot;A1&quot;].PutValue(&quot;Teacher Name&quot;);</span><br><span class="line">worksheet.Cells[&quot;A1&quot;].SetStyle(style);</span><br><span class="line">worksheet.Cells[&quot;A2&quot;].PutValue(&quot;&amp;=Teacher.Name&quot;);</span><br><span class="line"></span><br><span class="line">worksheet.Cells[&quot;B1&quot;].PutValue(&quot;Teacher Age&quot;);</span><br><span class="line">worksheet.Cells[&quot;B1&quot;].SetStyle(style);</span><br><span class="line">worksheet.Cells[&quot;B2&quot;].PutValue(&quot;&amp;=Teacher.Age&quot;);</span><br><span class="line"></span><br><span class="line">worksheet.Cells[&quot;A3&quot;].PutValue(&quot;Student Name&quot;);</span><br><span class="line">worksheet.Cells[&quot;A3&quot;].SetStyle(style);</span><br><span class="line">worksheet.Cells[&quot;A4&quot;].PutValue(&quot;&amp;=Teacher.Students.Name&quot;);</span><br><span class="line"></span><br><span class="line">worksheet.Cells[&quot;B3&quot;].PutValue(&quot;Student Age&quot;);</span><br><span class="line">worksheet.Cells[&quot;B3&quot;].SetStyle(style);</span><br><span class="line">worksheet.Cells[&quot;B4&quot;].PutValue(&quot;&amp;=Teacher.Students.Age&quot;);</span><br><span class="line">worksheet.AutoFitColumns();</span><br><span class="line">//A named range &quot;_CellsSmartMarkers&quot; must be added for checking which range contains all smart markers about a table.</span><br><span class="line">worksheet.Cells.CreateRange(&quot;A1:B4&quot;).Name = &quot;_CellsSmartMarkers&quot;;</span><br><span class="line">// Initialize WorkbookDesigner object</span><br><span class="line">WorkbookDesigner designer = new WorkbookDesigner();</span><br><span class="line"></span><br><span class="line">// Load the template file</span><br><span class="line">designer.Workbook = workbook;</span><br><span class="line"></span><br><span class="line">System.Collections.Generic.List&lt;Teacher&gt; list = new System.Collections.Generic.List&lt;Teacher&gt;();</span><br><span class="line"></span><br><span class="line">// Create an object for the Teacher class</span><br><span class="line">Teacher h1 = new Teacher(&quot;Mark John&quot;, 30);</span><br><span class="line"></span><br><span class="line">// Create the relevant student objects for the Teacher object</span><br><span class="line">h1.Students = new List&lt;Person&gt;();</span><br><span class="line">h1.Students.Add(new Person(&quot;Chen Zhao&quot;, 14));</span><br><span class="line">h1.Students.Add(new Person(&quot;Jamima Winfrey&quot;, 18));</span><br><span class="line">h1.Students.Add(new Person(&quot;Reham Smith&quot;, 15));</span><br><span class="line"></span><br><span class="line">// Create another object for the Teacher class</span><br><span class="line">Teacher h2 = new Teacher(&quot;Masood Shankar&quot;, 40);</span><br><span class="line"></span><br><span class="line">// Create the relevant student objects for the Teacher object</span><br><span class="line">h2.Students = new List&lt;Person&gt;();</span><br><span class="line">h2.Students.Add(new Person(&quot;Karishma Jathool&quot;, 16));</span><br><span class="line">h2.Students.Add(new Person(&quot;Angela Rose&quot;, 13));</span><br><span class="line">h2.Students.Add(new Person(&quot;Hina Khanna&quot;, 15));</span><br><span class="line"></span><br><span class="line">// Add the objects to the list</span><br><span class="line">list.Add(h1);</span><br><span class="line">list.Add(h2);</span><br><span class="line"></span><br><span class="line">// Specify the DataSource</span><br><span class="line">designer.SetDataSource(&quot;Teacher&quot;, list);</span><br><span class="line">designer.LineByLine = false;</span><br><span class="line">// Process the markers</span><br><span class="line">designer.Process();</span><br><span class="line"></span><br><span class="line">// Autofit columns</span><br><span class="line">worksheet.AutoFitColumns();</span><br><span class="line"></span><br><span class="line">// Save the Excel file.</span><br><span class="line">designer.Workbook.Save(dataDir + &quot;output.xlsx&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class Person</span><br><span class="line">&#123;</span><br><span class="line">    private string m_Name;</span><br><span class="line"></span><br><span class="line">    public string Name</span><br><span class="line">    &#123;</span><br><span class="line">        get &#123; return m_Name; &#125;</span><br><span class="line">        set &#123; m_Name = value; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    private int m_Age;</span><br><span class="line"></span><br><span class="line">    public int Age</span><br><span class="line">    &#123;</span><br><span class="line">        get &#123; return m_Age; &#125;</span><br><span class="line">        set &#123; m_Age = value; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    internal Person(string name, int age)</span><br><span class="line">    &#123;</span><br><span class="line">        this.m_Name = name;</span><br><span class="line">        this.m_Age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Teacher</span><br><span class="line">&#123;</span><br><span class="line">    private string m_Name;</span><br><span class="line"></span><br><span class="line">    public string Name</span><br><span class="line">    &#123;</span><br><span class="line">        get &#123; return m_Name; &#125;</span><br><span class="line">        set &#123; m_Name = value; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    private int m_Age;</span><br><span class="line"></span><br><span class="line">    public int Age</span><br><span class="line">    &#123;</span><br><span class="line">        get &#123; return m_Age; &#125;</span><br><span class="line">        set &#123; m_Age = value; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private List&lt;Person&gt; mStudents;</span><br><span class="line">    public List&lt;Person&gt; Students</span><br><span class="line">    &#123;</span><br><span class="line">        get &#123; return mStudents; &#125;</span><br><span class="line">        set &#123; mStudents = value; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public Teacher(string name, int age)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Name = name;</span><br><span class="line">        this.Age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%B0%86%E5%B5%8C%E5%A5%97%E5%AF%B9%E8%B1%A1%E7%94%A8%E4%BA%8E%E6%99%BA%E8%83%BD%E6%A0%87%E8%AE%B0"><span class="toc-text">为什么要将嵌套对象用于智能标记</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%99%BA%E8%83%BD%E6%A0%87%E8%AE%B0%E5%AF%BC%E5%85%A5%E5%8C%BF%E5%90%8D%E7%B1%BB%E5%9E%8B%E6%88%96%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AF%B9%E8%B1%A1"><span class="toc-text">如何使用智能标记导入匿名类型或自定义对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%99%BA%E8%83%BD%E6%A0%87%E8%AE%B0%E5%AF%BC%E5%85%A5%E5%B5%8C%E5%A5%97%E5%AF%B9%E8%B1%A1"><span class="toc-text">如何使用智能标记导入嵌套对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%99%BA%E8%83%BD%E6%A0%87%E8%AE%B0%E5%B0%86%E9%80%9A%E7%94%A8%E5%88%97%E8%A1%A8%E5%AF%BC%E5%85%A5%E4%B8%BA%E5%B5%8C%E5%A5%97%E5%AF%B9%E8%B1%A1"><span class="toc-text">如何使用智能标记将通用列表导入为嵌套对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%99%BA%E8%83%BD%E6%A0%87%E8%AE%B0%E5%AF%BC%E5%85%A5%E5%B5%8C%E5%A5%97%E5%AF%B9%E8%B1%A1%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E9%80%90%E8%A1%8C%E5%AF%BC%E5%85%A5%E5%B5%8C%E5%A5%97%E5%AF%B9%E8%B1%A1"><span class="toc-text">如何使用智能标记导入嵌套对象，而不是逐行导入嵌套对象</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/blog/js/catalog.js"></script>
+
+
+
+
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/saver-live">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+        <li>
+          
+              <a title="twitter" target="_blank" rel="noopener" href="https://x.com/saver_live">
+                <i class="iconfont icon-twitter"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/saver-live">Copyright © 2025 saver</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/blog/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/blog/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/blog/js/colorscheme.js"></script>
+
+
+
+
+
+        
+
+      </div>
+    </div>
+  
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>
